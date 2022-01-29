@@ -10,6 +10,7 @@ import java.util.List;
 
 import art.coded.pagefetch.model.entity.Element;
 import art.coded.pagefetch.model.fetch.FetchApi;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,7 +24,6 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     String mAppKey;
 
     public ElementPositionalDataSource(FetchApi api, String appId, String appKey) {
-
         mApi = api;
         mAppId = appId;
         mAppKey = appKey;
@@ -34,20 +34,26 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
 
         final int current = 1;
 
-        mApi.getPositionalElements(mAppId, mAppKey).enqueue(new Callback<List<Element>>() {
+        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
+        RequestBody requestBody = call.request().body();
+        if (requestBody == null) return;
+        Log.v(LOG_TAG, requestBody.toString());
+
+        call.enqueue(new Callback<List<Element>>() {
             @Override
             public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
-                if (response.body() == null) return;
-                callback.onResult(response.body(), current);
-                Log.v(LOG_TAG, response.body().toString());
+                List<Element> responseBody = response.body();
+                if (responseBody == null) return;
+                callback.onResult(responseBody, current);
+                Log.v(LOG_TAG, responseBody.toString());
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
                 String message = t.getMessage();
                 if (message == null) return;
-                Log.e(LOG_TAG, t.getMessage());
+                Log.e(LOG_TAG, message);
             }
         });
     }
@@ -55,15 +61,25 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     @Override
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Element> callback) {
 
-        mApi.getPositionalElements(mAppId, mAppKey).enqueue(new Callback<List<Element>>() {
+        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
+        RequestBody requestBody = call.request().body();
+        if (requestBody == null) return;
+        Log.v(LOG_TAG, requestBody.toString());
+
+        call.enqueue(new Callback<List<Element>>() {
             @Override
             public void onResponse(@NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
-                if (response.body() != null) callback.onResult(response.body());
+                List<Element> responseBody = response.body();
+                if (responseBody == null) return;
+                callback.onResult(responseBody);
+                Log.v(LOG_TAG, responseBody.toString());
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
-                if (t.getMessage() != null) Log.e(LOG_TAG, t.getMessage());
+                String message = t.getMessage();
+                if (message == null) return;
+                Log.e(LOG_TAG, message);
             }
         });
     }

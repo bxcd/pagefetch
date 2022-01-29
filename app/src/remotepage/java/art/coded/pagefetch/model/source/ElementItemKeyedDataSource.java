@@ -9,6 +9,7 @@ import java.util.List;
 
 import art.coded.pagefetch.model.entity.Element;
 import art.coded.pagefetch.model.fetch.FetchApi;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,62 +23,67 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
     String mAppKey;
 
     public ElementItemKeyedDataSource(FetchApi api, String appId, String appKey) {
-
         mApi = api;
         mAppId = appId;
         mAppKey = appKey;
     }
 
-    @NonNull
-    @Override
-    public Integer getKey(@NonNull Element element) {
-        return element.getId();
-    }
+    @NonNull @Override public Integer getKey(@NonNull Element element) { return element.getId(); }
+    @Override public void loadBefore(
+            @NonNull LoadParams<Integer> loadParams, @NonNull LoadCallback<Element> loadCallback) {}
 
-    @Override
-    public void loadAfter(@NonNull LoadParams<Integer> loadParams, @NonNull LoadCallback<Element> loadCallback) {
+    @Override public void loadInitial(
+            @NonNull LoadInitialParams<Integer> loadInitialParams,
+            @NonNull LoadInitialCallback<Element> loadInitialCallback) {
 
-        final int current = loadParams.key;
+        final int current = 1;
 
-        mApi.getItemKeyedElements(mAppId, mAppKey, current).enqueue(new Callback<List<Element>>() {
-            @Override
-            public void onResponse(
+        Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, current);
+        RequestBody requestBody = call.request().body();
+        if (requestBody == null) return;
+        Log.v(LOG_TAG, requestBody.toString());
+
+        call.enqueue(new Callback<List<Element>>() {
+            @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
-                if (response.body() == null) return;
-                loadCallback.onResult(response.body());
-                Log.v(LOG_TAG, response.body().toString());
+                List<Element> responseBody = response.body();
+                if (responseBody == null) return;
+                loadInitialCallback.onResult(responseBody, current, loadInitialParams.requestedLoadSize);
+                Log.v(LOG_TAG, responseBody.toString());
             }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
+            @Override public void onFailure(
+                    @NonNull Call<List<Element>> call, @NonNull Throwable t) {
                 String message = t.getMessage();
                 if (message == null) return;
-                Log.e(LOG_TAG, t.getMessage());
+                Log.e(LOG_TAG, message);
             }
         });
     }
 
-    @Override
-    public void loadBefore(@NonNull LoadParams<Integer> loadParams, @NonNull LoadCallback<Element> loadCallback) {
+    @Override public void loadAfter(
+            @NonNull LoadParams<Integer> loadParams, @NonNull LoadCallback<Element> loadCallback) {
 
-    }
+        final int current = loadParams.key;
 
-    @Override
-    public void loadInitial(@NonNull LoadInitialParams<Integer> loadInitialParams, @NonNull LoadInitialCallback<Element> loadInitialCallback) {
+        Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, current);
+        RequestBody requestBody = call.request().body();
+        if (requestBody == null) return;
+        Log.v(LOG_TAG, requestBody.toString());
 
-        final int current = 1;
-
-        mApi.getItemKeyedElements(mAppId, mAppKey, current).enqueue(new Callback<List<Element>>() {
-            @Override
-            public void onResponse(
+        call.enqueue(new Callback<List<Element>>() {
+            @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
-                if (response.body() != null)
-                    loadInitialCallback.onResult(response.body(), current, loadInitialParams.requestedLoadSize);
+                List<Element> responseBody = response.body();
+                if (responseBody == null) return;
+                loadCallback.onResult(responseBody);
+                Log.v(LOG_TAG, responseBody.toString());
             }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
-                if (t.getMessage() != null) Log.e(LOG_TAG, t.getMessage());
+            @Override public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
+                String message = t.getMessage();
+                if (message == null) return;
+                Log.e(LOG_TAG, message);
             }
         });
     }
