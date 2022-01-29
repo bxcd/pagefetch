@@ -3,20 +3,23 @@ package art.coded.pagefetch.model.source;
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 
+import java.util.List;
+
+import art.coded.pagefetch.model.entity.Element;
 import art.coded.pagefetch.model.fetch.FetchApi;
 
-public class ElementDataSourceFactory extends DataSource.Factory {
+public class ElementDataSourceFactory extends DataSource.Factory<Integer, Element> {
 
-    FetchApi mApi;
-    DatasourceType mType;
-    String mAppId;
-    String mAppKey;
+    private final FetchApi mApi;
+    private final DatasourceType mType;
+    private final String mAppId;
+    private final String mAppKey;
 
     public ElementDataSourceFactory(
             FetchApi api,
             DatasourceType type,
-            String appId,
-            String appKey) {
+            final String appId,
+            final String appKey) {
 
         mApi = api;
         mType = type;
@@ -24,7 +27,7 @@ public class ElementDataSourceFactory extends DataSource.Factory {
         mAppKey = appKey;
     }
 
-    @NonNull @Override public DataSource create() {
+    @NonNull @Override public DataSource<Integer, Element> create() {
         switch(mType) {
             case PAGE: return new ElementPageKeyedDataSource(mApi, mAppId, mAppKey);
             case ITEM: return new ElementItemKeyedDataSource(mApi, mAppId, mAppKey);

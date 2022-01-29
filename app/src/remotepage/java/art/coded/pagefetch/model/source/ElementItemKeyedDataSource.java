@@ -18,9 +18,9 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
 
     private static final String LOG_TAG = ElementItemKeyedDataSource.class.getSimpleName();
 
-    FetchApi mApi;
-    String mAppId;
-    String mAppKey;
+    private final FetchApi mApi;
+    private final String mAppId;
+    private final String mAppKey;
 
     public ElementItemKeyedDataSource(FetchApi api, String appId, String appKey) {
         mApi = api;

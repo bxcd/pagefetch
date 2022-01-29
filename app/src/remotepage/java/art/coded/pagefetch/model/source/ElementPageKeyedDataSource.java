@@ -17,9 +17,9 @@ import retrofit2.Response;
 public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Element> {
 
     private static final String LOG_TAG = ElementPageKeyedDataSource.class.getSimpleName();
-    FetchApi mApi;
-    String mAppId;
-    String mAppKey;
+    private final FetchApi mApi;
+    private final String mAppId;
+    private final String mAppKey;
 
     public ElementPageKeyedDataSource(FetchApi api, String appId, String appKey) {
         mApi = api;
@@ -31,10 +31,12 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
             @NonNull LoadParams<Integer> loadParams,
             @NonNull LoadCallback<Integer, Element> loadCallback) {}
 
-    @Override public void loadInitial(@NonNull LoadInitialParams<Integer> loadInitialParams, @NonNull LoadInitialCallback<Integer, Element> loadInitialCallback) {
+    @Override public void loadInitial(
+            @NonNull LoadInitialParams<Integer> loadInitialParams,
+            @NonNull LoadInitialCallback<Integer, Element> loadInitialCallback) {
 
-        int current = 1;
-        int pageSize = loadInitialParams.requestedLoadSize;
+        final int current = 1;
+        final int pageSize = loadInitialParams.requestedLoadSize;
 
         Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
         RequestBody requestBody = call.request().body();
@@ -50,7 +52,8 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
                 Log.v(LOG_TAG, responseBody.toString());
             }
 
-            @Override public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
+            @Override public void onFailure(
+                    @NonNull Call<List<Element>> call, @NonNull Throwable t) {
                 String message = t.getMessage();
                 if (message == null) return;
                 Log.e(LOG_TAG, message);
@@ -62,8 +65,8 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
             @NonNull LoadParams<Integer> loadParams,
             @NonNull LoadCallback<Integer, Element> loadCallback) {
 
-        int current = loadParams.key;
-        int pageSize = loadParams.requestedLoadSize;
+        final int current = loadParams.key;
+        final int pageSize = loadParams.requestedLoadSize;
 
         Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
         RequestBody requestBody = call.request().body();
@@ -71,8 +74,7 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
         Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
-            @Override
-            public void onResponse(
+            @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
@@ -80,8 +82,8 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
                 Log.v(LOG_TAG, responseBody.toString());
             }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
+            @Override public void onFailure(
+                    @NonNull Call<List<Element>> call, @NonNull Throwable t) {
                 String message = t.getMessage();
                 if (message == null) return;
                 Log.e(LOG_TAG, message);
