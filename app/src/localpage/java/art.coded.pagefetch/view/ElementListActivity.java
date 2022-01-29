@@ -1,0 +1,26 @@
+package art.coded.pagefetch.view;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.sax.Element;
+
+import art.coded.pagefetch.databinding.ActivityListBinding;
+
+/**
+ * Manages higher-level UI abstractions such as the content view and action bar
+ */
+public class ElementListActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = Element.class.getSimpleName();
+
+    // From inflated layouts, sets the content view containing a Fragment and sets a SupportActionBar
+    @Override protected void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        ActivityListBinding binding = ActivityListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        setSupportActionBar(binding.toolbarList);
+    }
+}
