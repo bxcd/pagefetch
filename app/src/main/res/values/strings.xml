@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Page Fetch +</string>
+    <string name="sp_key_pagesize">pageSize</string>
+    <string name="increment_page_size">Increment page size</string>
+    <string name="decrement_page_size">Decrement page size</string>
+    <string name="increment_button_text">+</string>
+    <string name="decrement_button_text">—</string>
+    <string name="sp_key_controlsflipped">controls_flipped</string>
+    <string name="title_controlsflipped">Flip Controls</string>
+</resources>
