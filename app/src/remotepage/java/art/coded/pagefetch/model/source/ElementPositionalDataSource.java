@@ -19,9 +19,9 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
 
     private static final String LOG_TAG = ElementPositionalDataSource.class.getSimpleName();
 
-    FetchApi mApi;
-    String mAppId;
-    String mAppKey;
+    private final FetchApi mApi;
+    private final String mAppId;
+    private final String mAppKey;
 
     public ElementPositionalDataSource(FetchApi api, String appId, String appKey) {
         mApi = api;
@@ -30,7 +30,8 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     }
 
     @Override
-    public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<Element> callback) {
+    public void loadInitial(@NonNull LoadInitialParams params,
+                            @NonNull LoadInitialCallback<Element> callback) {
 
         final int current = 1;
 
@@ -40,8 +41,7 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
         Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
-            @Override
-            public void onResponse(
+            @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
@@ -49,8 +49,7 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
                 Log.v(LOG_TAG, responseBody.toString());
             }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
+            @Override public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
                 String message = t.getMessage();
                 if (message == null) return;
                 Log.e(LOG_TAG, message);
@@ -67,16 +66,15 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
         Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
+            @Override public void onResponse(
+                    @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 callback.onResult(responseBody);
                 Log.v(LOG_TAG, responseBody.toString());
             }
 
-            @Override
-            public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
+            @Override public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
                 String message = t.getMessage();
                 if (message == null) return;
                 Log.e(LOG_TAG, message);

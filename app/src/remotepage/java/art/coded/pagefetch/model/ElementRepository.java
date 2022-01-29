@@ -14,10 +14,9 @@ import art.coded.pagefetch.model.fetch.FetchClient;
  */
 public class ElementRepository {
 
-    ElementDataSourceFactory.DatasourceType mType;
+    private final ElementDataSourceFactory.DatasourceType mType;
 
-    public ElementRepository(
-            ElementDataSourceFactory.DatasourceType type) {
+    public ElementRepository(ElementDataSourceFactory.DatasourceType type) {
         mType = type;
     }
 

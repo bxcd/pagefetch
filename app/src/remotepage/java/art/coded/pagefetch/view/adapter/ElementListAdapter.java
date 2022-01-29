@@ -23,15 +23,13 @@ public class ElementListAdapter
         extends PagedListAdapter<Element, ElementListAdapter.ElementViewHolder> {
 
     // Member variables
-    LayoutInflater mLayoutInflater;
-    Activity mActivity;
+    private final LayoutInflater mLayoutInflater;
 
     // Instantiates a LayoutInflater provided from the calling Activity and sets indexing policy
     public ElementListAdapter(
             @NonNull DiffUtil.ItemCallback<Element> diffCallback, Activity activity) {
         super(diffCallback);
-        mActivity = activity;
-        mLayoutInflater = LayoutInflater.from(mActivity);
+        mLayoutInflater = LayoutInflater.from(activity);
     }
 
     // Inflates view holder
@@ -67,9 +65,9 @@ public class ElementListAdapter
 
         // Helper for populating child views from Element
         public void bind(Element element) {
-            String name = element.getName();
-            String idStr = String.format(Locale.getDefault(), "%d", element.getId());
-            String listIdStr = String.format(Locale.getDefault(), "%d", element.getListId());
+            final String name = element.getName();
+            final String idStr = String.format(Locale.getDefault(), "%d", element.getId());
+            final String listIdStr = String.format(Locale.getDefault(), "%d", element.getListId());
             mIdView.setText(String.format("ID : %s", idStr));
             mListIdView.setText(String.format("List ID : %s", listIdStr));
             mNameView.setText(name);

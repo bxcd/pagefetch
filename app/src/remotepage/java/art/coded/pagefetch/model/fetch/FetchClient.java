@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FetchClient {
 
-    public static Retrofit client;
+    private static Retrofit client;
 
     public static Retrofit getInstance(String baseUrl) {
 

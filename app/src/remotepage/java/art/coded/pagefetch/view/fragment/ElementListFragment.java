@@ -55,10 +55,11 @@ public class ElementListFragment
     private InputMethodManager mMethodManager;
     private FragmentListBinding binding;
     private ConstraintLayout mRootView;
-    private boolean mControlsFlipped;
-    private Integer mTypeKey;
     private EditText mEditText;
+
+    private boolean mControlsFlipped;
     private Integer mPageSize;
+    private Integer mTypeKey;
 
     // Inflates Views and defines UI objects and their interactions
     public View onCreateView(@NonNull LayoutInflater inflater,
