@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Locale;
+
 /**
  * An Element object instance with the required tags for interfacing with Dao and Room
  */
@@ -30,4 +32,11 @@ public class Element {
     public void setListId(@NonNull Integer listId) { mListId = listId; }
     @NonNull public String getName() { return mName; }
     public void setName(@NonNull String name) { mName = name; }
+
+    @NonNull @Override public String toString() {
+        return String.format(
+                Locale.getDefault(),
+                "Ref: %s; Id: %d; ListId: %d; Name: %s",
+                super.toString(), mId, mListId, mName);
+    }
 }
