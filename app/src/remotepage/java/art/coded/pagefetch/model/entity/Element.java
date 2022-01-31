@@ -36,7 +36,7 @@ public class Element {
     @NonNull @Override public String toString() {
         return String.format(
                 Locale.getDefault(),
-                "Ref: %s; Id: %d; ListId: %f; Name: %s",
+                "Ref: %s; Id: %d; ListId: %d; Name: %s",
                 super.toString(), mId, mListId.getScore(), mName);
     }
 
@@ -45,14 +45,14 @@ public class Element {
         private final String LOG_TAG = ListId.class.getSimpleName();
 
         // Member variable
-        @SerializedName("score")
-        @Expose private Float mScore;
+        @SerializedName("rating")
+        @Expose private Integer mRating;
 
         // Ctor
-        public ListId(@NonNull Float score) { mScore = score; }
+        public ListId(@NonNull Integer rating) { mRating = rating; }
 
         // Getters and Setters
-        @NonNull public Float getScore() { return mScore; }
-        public void setScore(@NonNull Float score) { mScore = score; }
+        @NonNull public Integer getScore() { return mRating; }
+        public void setScore(@NonNull Integer rating) { mRating = rating; }
     }
 }
