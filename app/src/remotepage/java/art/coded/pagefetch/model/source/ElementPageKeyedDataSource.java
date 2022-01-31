@@ -46,7 +46,11 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 loadInitialCallback.onResult(responseBody, null, current);
-                Log.v(LOG_TAG, responseBody.toString());
+                Log.v(LOG_TAG, String.format(
+                        "Call generated callback response size of %d with contents of %s",
+                        responseBody.size(),
+                        responseBody.toString()
+                ));
             }
 
             @Override public void onFailure(
@@ -66,9 +70,6 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
         final int pageSize = loadParams.requestedLoadSize;
 
         Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
-        RequestBody requestBody = call.request().body();
-        if (requestBody == null) return;
-        Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
@@ -76,7 +77,11 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 loadCallback.onResult(responseBody, current);
-                Log.v(LOG_TAG, responseBody.toString());
+                Log.v(LOG_TAG, String.format(
+                        "Call generated callback response size of %d with contents of %s",
+                        responseBody.size(),
+                        responseBody.toString()
+                ));
             }
 
             @Override public void onFailure(
