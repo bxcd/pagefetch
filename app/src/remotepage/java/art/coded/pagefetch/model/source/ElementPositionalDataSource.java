@@ -33,8 +33,6 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     public void loadInitial(@NonNull LoadInitialParams params,
                             @NonNull LoadInitialCallback<Element> callback) {
 
-        final int current = 0;
-
         Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
 
         call.enqueue(new Callback<List<Element>>() {
@@ -42,7 +40,7 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                callback.onResult(responseBody, current, 100);
+                callback.onResult(responseBody, params.requestedStartPosition, 100);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
