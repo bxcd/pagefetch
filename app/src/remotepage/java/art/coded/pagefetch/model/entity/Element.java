@@ -17,26 +17,42 @@ public class Element {
     // Member variables
     @SerializedName("orgID")
     @Expose private Integer mId;
-    @SerializedName("minRating")
-    @Expose private Integer mListId;
+    @SerializedName("currentRating")
+    @Expose private ListId mListId;
     @SerializedName("charityName")
     @Expose private String mName;
 
     // Ctor
     public Element(@NonNull Integer id) { mId = id; }
 
-    // Getters and settings
+    // Getters and Setters
     @NonNull public Integer getId() { return mId; }
     public void setId(@NonNull Integer id) { mId = id; }
-    @NonNull public Integer getListId() { return mListId; }
-    public void setListId(@NonNull Integer listId) { mListId = listId; }
+    @NonNull public ListId getListId() { return mListId; }
+    public void setListId(@NonNull ListId listId) { mListId = listId; }
     @NonNull public String getName() { return mName; }
     public void setName(@NonNull String name) { mName = name; }
 
     @NonNull @Override public String toString() {
         return String.format(
                 Locale.getDefault(),
-                "Ref: %s; Id: %d; ListId: %d; Name: %s",
-                super.toString(), mId, mListId, mName);
+                "Ref: %s; Id: %d; ListId: %f; Name: %s",
+                super.toString(), mId, mListId.getScore(), mName);
+    }
+
+    public static class ListId {
+
+        private final String LOG_TAG = ListId.class.getSimpleName();
+
+        // Member variable
+        @SerializedName("score")
+        @Expose private Float mScore;
+
+        // Ctor
+        public ListId(@NonNull Float score) { mScore = score; }
+
+        // Getters and Setters
+        @NonNull public Float getScore() { return mScore; }
+        public void setScore(@NonNull Float score) { mScore = score; }
     }
 }
