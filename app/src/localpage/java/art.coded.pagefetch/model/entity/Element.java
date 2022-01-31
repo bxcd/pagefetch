@@ -21,7 +21,7 @@ public class Element {
     // Ctor
     public Element(@NonNull Integer id) { mId = id; }
 
-    // Getters and settings
+    // Getters and Setters
     @NonNull public Integer getId() { return mId; }
     public void setId(@NonNull Integer id) { mId = id; }
     @NonNull public Integer getListId() { return mListId; }
