@@ -12,13 +12,15 @@ public interface FetchApi {
     @GET("/v2/Organizations")
     Call<List<Element>> getPositionalElements(
             @Query("app_id") String appId,
-            @Query("app_key") String appKey
+            @Query("app_key") String appKey,
+            @Query("rated") boolean rated
     );
 
     @GET("/v2/Organizations")
     Call<List<Element>> getItemKeyedElements(
             @Query("app_id") String appId,
             @Query("app_key") String appKey,
+            @Query("rated") boolean rated,
             @Query("orgID") int orgId
     );
 
@@ -26,7 +28,9 @@ public interface FetchApi {
     Call<List<Element>> getPageKeyedElements(
             @Query("app_id") String appId,
             @Query("app_key") String appKey,
+            @Query("rated") boolean rated,
             @Query("pageNum") int pageNum,
             @Query("pageSize") int pageSize
+
     );
 }
