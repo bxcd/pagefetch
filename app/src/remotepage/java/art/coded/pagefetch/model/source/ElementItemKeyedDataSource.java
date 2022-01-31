@@ -36,7 +36,7 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
             @NonNull LoadInitialParams<Integer> loadInitialParams,
             @NonNull LoadInitialCallback<Element> loadInitialCallback) {
 
-        final int current = 1;
+        final int current = 0;
 
         Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, current);
 
@@ -45,7 +45,7 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                loadInitialCallback.onResult(responseBody, current, loadInitialParams.requestedLoadSize);
+                loadInitialCallback.onResult(responseBody, current, 100);
                 Log.v(LOG_TAG, responseBody.toString());
             }
 

@@ -55,6 +55,7 @@ public class ElementListFragment
     private InputMethodManager mMethodManager;
     private FragmentListBinding binding;
     private ConstraintLayout mRootView;
+    private RecyclerView mRecyclerView;
     private EditText mEditText;
 
     private boolean mControlsFlipped;
@@ -99,11 +100,11 @@ public class ElementListFragment
         mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
 
         // Instantiate amd format RecyclerView and attach ListAdapter to RecyclerView
-        final RecyclerView recyclerView = binding.rvList;
+        mRecyclerView = binding.rvList;
         mPagedListAdapter =
                 new ElementListAdapter(new ElementComparator(), mFragmentActivity);
-        recyclerView.setAdapter(mPagedListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+        mRecyclerView.setAdapter(mPagedListAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
 
         mTypeKey = mSharedPreferences.getInt(
                 getString(R.string.sp_key_datasourcetype), 2);
@@ -155,7 +156,13 @@ public class ElementListFragment
             mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
             mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
 
+            mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
+
+            mRecyclerView.setAdapter(mPagedListAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+
             // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
+            mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
             mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
         }
     }
@@ -216,6 +223,11 @@ public class ElementListFragment
                         ElementDataSourceFactory.DatasourceType.values()[mTypeKey]
                 );
                 Toast.makeText(getContext(), type, Toast.LENGTH_LONG).show();
+
+                mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
+
+                mRecyclerView.setAdapter(mPagedListAdapter);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
 
                 mListViewModel.loadData(mFragmentActivity.getApplication(), mTypeKey);
 

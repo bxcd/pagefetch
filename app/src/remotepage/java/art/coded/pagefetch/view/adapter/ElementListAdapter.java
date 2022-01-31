@@ -23,12 +23,13 @@ public class ElementListAdapter
         extends PagedListAdapter<Element, ElementListAdapter.ElementViewHolder> {
 
     // Member variables
-    private final LayoutInflater mLayoutInflater;
+    private LayoutInflater mLayoutInflater;
 
     // Instantiates a LayoutInflater provided from the calling Activity and sets indexing policy
     public ElementListAdapter(
             @NonNull DiffUtil.ItemCallback<Element> diffCallback, Activity activity) {
         super(diffCallback);
+        if (activity == null) return;
         mLayoutInflater = LayoutInflater.from(activity);
     }
 
