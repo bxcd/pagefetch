@@ -15,19 +15,19 @@ public class Element {
     private static final String LOG_TAG = Element.class.getSimpleName();
 
     // Member variables
-    @SerializedName("orgID")
-    @Expose private Integer mId;
+    @SerializedName("ein")
+    @Expose private String mId;
     @SerializedName("currentRating")
     @Expose private ListId mListId;
     @SerializedName("charityName")
     @Expose private String mName;
 
     // Ctor
-    public Element(@NonNull Integer id) { mId = id; }
+    public Element(@NonNull String id) { mId = id; }
 
     // Getters and Setters
-    @NonNull public Integer getId() { return mId; }
-    public void setId(@NonNull Integer id) { mId = id; }
+    @NonNull public String getId() { return mId; }
+    public void setId(@NonNull String id) { mId = id; }
     @NonNull public ListId getListId() { return mListId; }
     public void setListId(@NonNull ListId listId) { mListId = listId; }
     @NonNull public String getName() { return mName; }

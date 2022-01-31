@@ -9,7 +9,6 @@ import java.util.List;
 
 import art.coded.pagefetch.model.entity.Element;
 import art.coded.pagefetch.model.fetch.FetchApi;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +27,7 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
         mAppKey = appKey;
     }
 
-    @NonNull @Override public Integer getKey(@NonNull Element element) { return element.getId(); }
+    @NonNull @Override public Integer getKey(@NonNull Element element) { return Integer.valueOf(element.getId()); }
     @Override public void loadBefore(
             @NonNull LoadParams<Integer> loadParams, @NonNull LoadCallback<Element> loadCallback) {}
 
@@ -65,7 +64,7 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
     @Override public void loadAfter(
             @NonNull LoadParams<Integer> loadParams, @NonNull LoadCallback<Element> loadCallback) {
 
-        final int current = loadParams.key;
+        final int current = loadParams.requestedLoadSize / 3;
 
         Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, true, current);
 

@@ -75,7 +75,7 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                loadCallback.onResult(responseBody, null);
+                loadCallback.onResult(responseBody, loadParams.key);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
