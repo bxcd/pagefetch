@@ -38,7 +38,7 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
 
         final int current = 0;
 
-        Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, current);
+        Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey,true,  current);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
@@ -67,7 +67,7 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
 
         final int current = loadParams.key;
 
-        Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, current);
+        Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, true, current);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(

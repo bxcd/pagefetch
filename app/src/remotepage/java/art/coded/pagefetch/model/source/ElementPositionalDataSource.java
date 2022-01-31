@@ -33,7 +33,7 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     public void loadInitial(@NonNull LoadInitialParams params,
                             @NonNull LoadInitialCallback<Element> callback) {
 
-        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
+        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
@@ -59,7 +59,7 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     @Override
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Element> callback) {
 
-        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
+        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(

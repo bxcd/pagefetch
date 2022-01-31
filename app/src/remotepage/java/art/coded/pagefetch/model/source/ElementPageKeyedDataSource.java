@@ -37,7 +37,7 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
 
         final int pageSize = loadInitialParams.requestedLoadSize / 3;
 
-        Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, 1, pageSize);
+        Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, true, 1, pageSize);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
@@ -68,7 +68,7 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
         final int current = loadParams.key;
         final int pageSize = loadParams.requestedLoadSize / 3;
 
-        Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
+        Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, true, current, pageSize);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
