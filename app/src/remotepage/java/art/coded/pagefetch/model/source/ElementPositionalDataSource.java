@@ -43,7 +43,11 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 callback.onResult(responseBody, current, 100);
-                Log.v(LOG_TAG, responseBody.toString());
+                Log.v(LOG_TAG, String.format(
+                        "Call generated callback response size of %d with contents of %s",
+                        responseBody.size(),
+                        responseBody.toString()
+                ));
             }
 
             @Override public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
@@ -58,9 +62,6 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Element> callback) {
 
         Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
-        RequestBody requestBody = call.request().body();
-        if (requestBody == null) return;
-        Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
@@ -68,7 +69,11 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 callback.onResult(responseBody);
-                Log.v(LOG_TAG, responseBody.toString());
+                Log.v(LOG_TAG, String.format(
+                        "Call generated callback response size of %d with contents of %s",
+                        responseBody.size(),
+                        responseBody.toString()
+                ));
             }
 
             @Override public void onFailure(@NonNull Call<List<Element>> call, @NonNull Throwable t) {
