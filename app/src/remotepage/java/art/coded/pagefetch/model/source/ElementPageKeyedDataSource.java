@@ -35,17 +35,16 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
             @NonNull LoadInitialParams<Integer> loadInitialParams,
             @NonNull LoadInitialCallback<Integer, Element> loadInitialCallback) {
 
-        final int current = 1;
-        final int pageSize = loadInitialParams.requestedLoadSize;
+        final int pageSize = loadInitialParams.requestedLoadSize / 3;
 
-        Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
+        Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, 1, pageSize);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                loadInitialCallback.onResult(responseBody, null, current);
+                loadInitialCallback.onResult(responseBody, null, pageSize);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
@@ -66,8 +65,8 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
             @NonNull LoadParams<Integer> loadParams,
             @NonNull LoadCallback<Integer, Element> loadCallback) {
 
-        final int current = 0;
-        final int pageSize = loadParams.requestedLoadSize;
+        final int current = loadParams.key;
+        final int pageSize = loadParams.requestedLoadSize / 3;
 
         Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
 
@@ -76,7 +75,7 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                loadCallback.onResult(responseBody, current);
+                loadCallback.onResult(responseBody, null);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
