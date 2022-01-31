@@ -36,9 +36,6 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
         final int current = 1;
 
         Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey);
-        RequestBody requestBody = call.request().body();
-        if (requestBody == null) return;
-        Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(

@@ -39,9 +39,6 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
         final int pageSize = loadInitialParams.requestedLoadSize;
 
         Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
-        RequestBody requestBody = call.request().body();
-        if (requestBody == null) return;
-        Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(

@@ -39,9 +39,6 @@ public class ElementItemKeyedDataSource extends ItemKeyedDataSource<Integer, Ele
         final int current = 1;
 
         Call<List<Element>> call = mApi.getItemKeyedElements(mAppId, mAppKey, current);
-        RequestBody requestBody = call.request().body();
-        if (requestBody == null) return;
-        Log.v(LOG_TAG, requestBody.toString());
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
