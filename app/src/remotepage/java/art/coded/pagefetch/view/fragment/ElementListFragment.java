@@ -17,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +58,6 @@ public class ElementListFragment
     private ConstraintLayout mRootView;
     private RecyclerView mRecyclerView;
     private EditText mEditText;
-
     private boolean mControlsFlipped;
     private Integer mPageSize;
     private Integer mTypeKey;
@@ -107,7 +107,7 @@ public class ElementListFragment
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
 
         mTypeKey = mSharedPreferences.getInt(
-                getString(R.string.sp_key_datasourcetype), 2);
+                getString(R.string.sp_key_datasourcetype), 0);
         // Instantiate and load ViewModel
         mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
         mListViewModel.loadData(mFragmentActivity.getApplication(), mTypeKey);
@@ -184,8 +184,10 @@ public class ElementListFragment
 
     // Update preference, then set menu option icon and controller orientation based on preference
     @Override public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         final int id = item.getItemId();
-        switch(id) {
+        switch (id) {
+
             case R.id.action_controls:
 
             mControlsFlipped = !mControlsFlipped;
@@ -198,10 +200,11 @@ public class ElementListFragment
             icon.setAutoMirrored(true);
             icon.setLayoutDirection(iconDirection);
 
+            int wrapperId = R.id.controller_wrapper;
             ConstraintSet set = new ConstraintSet();
             set.clone(mRootView);
-            set.connect(R.id.controller_wrapper, removedSide, ConstraintSet.UNSET, removedSide, 0);
-            set.connect(R.id.controller_wrapper, addedSide, ConstraintSet.PARENT_ID, addedSide, 32);
+            set.connect(wrapperId, removedSide, ConstraintSet.UNSET, removedSide, 0);
+            set.connect(wrapperId, addedSide, ConstraintSet.PARENT_ID, addedSide, 32);
             set.applyTo(mRootView);
             break;
 
@@ -234,6 +237,9 @@ public class ElementListFragment
                 // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
                 mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
 
+                LinearLayout controllerWrapper = mRootView.findViewById(R.id.controller_wrapper);
+                if (mTypeKey == 0) controllerWrapper.setVisibility(View.VISIBLE);
+                else controllerWrapper.setVisibility(View.GONE);
         }
         return super.onOptionsItemSelected(item);
     }
