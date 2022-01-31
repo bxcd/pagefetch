@@ -62,7 +62,7 @@ public class ElementPageKeyedDataSource extends PageKeyedDataSource<Integer, Ele
             @NonNull LoadParams<Integer> loadParams,
             @NonNull LoadCallback<Integer, Element> loadCallback) {
 
-        final int current = loadParams.key;
+        final int current = 0;
         final int pageSize = loadParams.requestedLoadSize;
 
         Call<List<Element>> call = mApi.getPageKeyedElements(mAppId, mAppKey, current, pageSize);
