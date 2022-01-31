@@ -12,7 +12,7 @@ import art.coded.pagefetch.databinding.ActivityListBinding;
  */
 public class ElementListActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = Element.class.getSimpleName();
+    private static final String LOG_TAG = ElementListActivity.class.getSimpleName();
 
     // Member variable
     private ActivityListBinding binding;

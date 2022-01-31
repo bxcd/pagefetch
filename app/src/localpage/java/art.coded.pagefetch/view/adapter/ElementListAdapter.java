@@ -67,12 +67,9 @@ public class ElementListAdapter
 
         // Helper for populating child views from Element
         public void bind(Element element) {
-            String name = element.getName();
-            String idStr = String.format(Locale.getDefault(), "%d", element.getId());
-            String listIdStr = String.format(Locale.getDefault(), "%d", element.getListId());
-            mIdView.setText(String.format("ID : %s", idStr));
-            mListIdView.setText(String.format("List ID : %s", listIdStr));
-            mNameView.setText(name);
+            mNameView.setText(element.getName());
+            mIdView.setText(String.format(Locale.getDefault(), "%d", element.getId()));
+            mListIdView.setText(String.format(Locale.getDefault(), "%d", element.getListId()));
         }
     }
 }
