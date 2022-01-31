@@ -9,20 +9,20 @@ import retrofit2.http.Query;
 
 public interface FetchApi {
 
-    @GET("/Organizations")
+    @GET("/v2/Organizations")
     Call<List<Element>> getPositionalElements(
             @Query("app_id") String appId,
             @Query("app_key") String appKey
     );
 
-    @GET("/Organizations")
+    @GET("/v2/Organizations")
     Call<List<Element>> getItemKeyedElements(
             @Query("app_id") String appId,
             @Query("app_key") String appKey,
             @Query("orgID") int orgId
     );
 
-    @GET("/Organizations")
+    @GET("/v2/Organizations")
     Call<List<Element>> getPageKeyedElements(
             @Query("app_id") String appId,
             @Query("app_key") String appKey,
