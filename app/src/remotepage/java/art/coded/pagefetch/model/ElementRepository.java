@@ -24,7 +24,7 @@ public class ElementRepository {
     public LiveData<PagedList<Element>> getPagedElements(
             Integer pageSize, String baseUrl, String appId, String appKey) {
         FetchApi api = FetchClient.getInstance(baseUrl).create(FetchApi.class);
-        return new LivePagedListBuilder<Integer, Element>(
+        return new LivePagedListBuilder<>(
                 new ElementDataSourceFactory(api, mType, appId, appKey), pageSize).build();
     }
 
