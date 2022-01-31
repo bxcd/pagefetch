@@ -36,7 +36,7 @@ public class Element {
     @NonNull @Override public String toString() {
         return String.format(
                 Locale.getDefault(),
-                "Ref: %s; Id: %d; ListId: %d; Name: %s",
+                "Ref: %s; Id: %s; ListId: %d; Name: %s",
                 super.toString(), mId, mListId.getScore(), mName);
     }
 
