@@ -1,6 +1,7 @@
 package art.coded.pagefetch.model;
 
 import android.app.Application;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -50,9 +51,7 @@ public class ElementRepository {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 elements.addAll(responseBody);
-                for (Element e : elements) {
-                    mElementDao.insert(e);
-                }
+                new PersistAsyncTask(mElementDao).execute(elements);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
@@ -69,5 +68,16 @@ public class ElementRepository {
         });
 
         return new LivePagedListBuilder<>(mElementDao.getPaged(), pageSize).build();
+    }
+
+    // Asynchronous handling of datasource interaction
+    private static class PersistAsyncTask extends AsyncTask<List<Element>, Void, Void> {
+
+        ElementDao mAsyncTaskDao;
+        public PersistAsyncTask(ElementDao dao) { mAsyncTaskDao = dao; }
+        @Override protected Void doInBackground(List<Element>... elements) {
+            for (Element e : elements[0]) { mAsyncTaskDao.insert(e); }
+            return null;
+        }
     }
 }
