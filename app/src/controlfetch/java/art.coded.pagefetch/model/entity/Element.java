@@ -1,6 +1,9 @@
 package art.coded.pagefetch.model.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,18 +11,19 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Locale;
 
 /**
- * An Element object instance with the required tags for interfacing with Dao and Room
+ * An Element object instance with the required tags for interfacing with Retrofit, Dao and Room
  */
+@Entity(tableName="element_table")
 public class Element {
 
     private static final String LOG_TAG = Element.class.getSimpleName();
 
     // Member variables
-    @SerializedName("ein")
-    @Expose private String mId;
+    @NonNull @ColumnInfo(name = "id") @SerializedName("ein")
+    @PrimaryKey @Expose private String mId;
     @SerializedName("currentRating")
     @Expose private ListId mListId;
-    @SerializedName("charityName")
+    @ColumnInfo(name="name") @SerializedName("charityName")
     @Expose private String mName;
 
     // Ctor
@@ -53,6 +57,6 @@ public class Element {
 
         // Getters and Setters
         @NonNull public Integer getRating() { return mRating; }
-        public void setScore(@NonNull Integer rating) { mRating = rating; }
+        public void setRating(@NonNull Integer rating) { mRating = rating; }
     }
 }

@@ -1,15 +1,10 @@
 package art.coded.pagefetch.viewmodel;
 
-import static art.coded.pagefetch.model.fetch.ElementDatasourceUtilities.getUrl;
-
 import android.app.Application;
-import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
-
-import java.net.URL;
 
 import art.coded.pagefetch.R;
 import art.coded.pagefetch.model.ElementRepository;
@@ -23,25 +18,20 @@ public class ElementListViewModel extends ViewModel {
     private static final String LOG_TAG = ElementListViewModel.class.getSimpleName();
 
     // Member variables
-    private ElementRepository mRepository;
+    private Application mApplication;
 
     // From application argument instantiates Repository from which LiveData is retrieved from Dao
     public void loadData(Application application) {
-        mRepository = new ElementRepository(application);
-
-        String baseUrl = application.getString(R.string.base_url);
-        String apiPath = "v2/Organizations";
-
-        // Defines datasource URL
-        Uri.Builder builder = Uri.parse(baseUrl).buildUpon();
-        builder.appendPath(apiPath);
-        URL url = getUrl(builder.build());
-
-        mRepository.fetchAllElements(url); // updates LiveData when fetched Elements are added to Dao
+        mApplication = application;
     }
 
     // Provides observable, pagable LiveData to list adapter
     public LiveData<PagedList<Element>> elementList(Integer pageSize) {
-        return (mRepository.getPagedElements(pageSize));
+        String baseUrl = mApplication.getString(R.string.base_url);
+        String appId = mApplication.getString(R.string.cn_app_id);
+        String appKey  = mApplication.getString(R.string.cn_app_key);
+        ElementRepository repository = new ElementRepository(mApplication);
+        repository.deleteAll();
+        return (repository.getPagedElements(baseUrl, appId, appKey, pageSize));
     }
 }
