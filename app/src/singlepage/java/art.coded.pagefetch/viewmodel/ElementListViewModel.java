@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.paging.PagedList;
 
+import java.util.List;
+
 import art.coded.pagefetch.R;
 import art.coded.pagefetch.model.ElementRepository;
 import art.coded.pagefetch.model.entity.Element;
@@ -25,8 +27,8 @@ public class ElementListViewModel extends ViewModel {
         mApplication = application;
     }
 
-    // Provides observable, pagable LiveData to list adapter
-    public LiveData<PagedList<Element>> elementList(Integer pageSize) {
+    // Provides observable, pageable LiveData to list adapter
+    public LiveData<List<Element>> elementList(Integer pageSize) {
         String baseUrl = mApplication.getString(R.string.base_url);
         String appId = mApplication.getString(R.string.cn_app_id);
         String appKey  = mApplication.getString(R.string.cn_app_key);

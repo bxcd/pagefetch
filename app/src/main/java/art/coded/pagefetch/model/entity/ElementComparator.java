@@ -16,6 +16,7 @@ public class ElementComparator extends DiffUtil.ItemCallback<Element> {
 
     @Override public boolean areContentsTheSame(@NonNull Element oldItem, @NonNull Element newItem) {
         return oldItem.getId().equals(newItem.getId())
+                && oldItem.getListId().getRating().equals(newItem.getListId().getRating())
                 && oldItem.getName().equals(newItem.getName());
     }
 }

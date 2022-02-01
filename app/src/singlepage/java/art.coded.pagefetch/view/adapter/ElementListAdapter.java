@@ -27,7 +27,7 @@ public class ElementListAdapter extends RecyclerView.Adapter<ElementListAdapter.
     LayoutInflater mLayoutInflater;
     List<Element> mAllElements;
 
-    // Instantiates a LayoutInflator provided from the calling Activity
+    // Instantiates a LayoutInflater provided from the calling Activity
     public ElementListAdapter(Activity activity) {
 
         mLayoutInflater = LayoutInflater.from(activity);
