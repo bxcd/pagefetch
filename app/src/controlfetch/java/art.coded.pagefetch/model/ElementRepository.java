@@ -37,6 +37,7 @@ public class ElementRepository {
         mElementDao = db.elementDao();
     }
 
+    public void deleteAll() { new DeleteAllAsyncTask(mElementDao).execute(); }
     public LiveData<PagedList<Element>> getPagedElements(
             String baseUrl, String appId, String appKey, Integer pageSize) {
 
@@ -77,6 +78,16 @@ public class ElementRepository {
         public PersistAsyncTask(ElementDao dao) { mAsyncTaskDao = dao; }
         @Override protected Void doInBackground(List<Element>... elements) {
             for (Element e : elements[0]) { mAsyncTaskDao.insert(e); }
+            return null;
+        }
+    }
+
+    private static class DeleteAllAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        ElementDao mAsyncTaskDao;
+        public DeleteAllAsyncTask(ElementDao dao) { mAsyncTaskDao = dao; }
+        @Override protected Void doInBackground(Void... voids) {
+            mAsyncTaskDao.deleteAll();
             return null;
         }
     }

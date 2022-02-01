@@ -50,6 +50,7 @@ public class ElementListFragment
     private SharedPreferences mSharedPreferences;
     private ElementListAdapter mListAdapter;
     private InputMethodManager mMethodManager;
+    private RecyclerView mRecyclerView;
     private FragmentListBinding binding;
     private ConstraintLayout mRootView;
     private boolean mControlsFlipped;
@@ -93,10 +94,10 @@ public class ElementListFragment
         mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
 
         // Instantiate amd format RecyclerView and attach ListAdapter to RecyclerView
-        final RecyclerView recyclerView = binding.rvList;
+        mRecyclerView = binding.rvList;
         mListAdapter = new ElementListAdapter(mFragmentActivity);
-        recyclerView.setAdapter(mListAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+        mRecyclerView.setAdapter(mListAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
 
         // Instantiate and load ViewModel
         mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
@@ -147,6 +148,13 @@ public class ElementListFragment
             mEditText.clearFocus();
             mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
             mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
+
+            mListAdapter = new ElementListAdapter(mFragmentActivity);
+            mListViewModel.loadData(mFragmentActivity.getApplication());
+
+            mRecyclerView.setAdapter(mListAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+
 
             // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
             mListViewModel.elementList(mPageSize).observe(getViewLifecycleOwner(),
