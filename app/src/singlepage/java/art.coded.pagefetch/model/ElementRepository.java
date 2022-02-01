@@ -38,7 +38,7 @@ public class ElementRepository {
     }
 
     public void deleteAll() { new DeleteAllAsyncTask(mElementDao).execute(); }
-    public LiveData<PagedList<Element>> getPagedElements(
+    public LiveData<List<Element>> getPagedElements(
             String baseUrl, String appId, String appKey, Integer pageSize) {
 
         List<Element> elements = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ElementRepository {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
                 elements.addAll(responseBody);
-                new PersistAsyncTask(mElementDao).execute(elements);
+                new PersistAsyncTask(mElementDao).execute(elements.toArray(new Element[0]));
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
@@ -68,16 +68,16 @@ public class ElementRepository {
             }
         });
 
-        return new LivePagedListBuilder<>(mElementDao.getPaged(), pageSize).build();
+        return mElementDao.getPaged();
     }
 
     // Asynchronous handling of datasource interaction
-    private static class PersistAsyncTask extends AsyncTask<List<Element>, Void, Void> {
+    private static class PersistAsyncTask extends AsyncTask<Element, Void, Void> {
 
         ElementDao mAsyncTaskDao;
         public PersistAsyncTask(ElementDao dao) { mAsyncTaskDao = dao; }
-        @Override protected Void doInBackground(List<Element>... elements) {
-            for (Element e : elements[0]) { mAsyncTaskDao.insert(e); }
+        @Override protected Void doInBackground(Element... elements) {
+            for (Element e : elements) { mAsyncTaskDao.insert(e); }
             return null;
         }
     }

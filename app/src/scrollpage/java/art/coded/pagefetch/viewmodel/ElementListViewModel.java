@@ -30,7 +30,7 @@ public class ElementListViewModel extends ViewModel {
         mApplication = application;
     }
 
-    // Provides observable, pagable LiveData to list adapter
+    // Provides observable, pageable LiveData to list adapter
     public LiveData<PagedList<Element>> elementList(Integer pageSize) {
         String baseUrl = mApplication.getString(R.string.base_url);
         String appId = mApplication.getString(R.string.cn_app_id);
