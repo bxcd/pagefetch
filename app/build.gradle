@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "art.coded.remotepage"
+        applicationId "art.coded.scrollpage"
         minSdk 24
         targetSdk 31
         versionCode 1
@@ -28,25 +28,15 @@ android {
 
     flavorDimensions "version"
     productFlavors {
-        remotepage {
+        scrollpage {
             dimension "version"
-            applicationIdSuffix ".remotepage"
-            versionNameSuffix "-remotepage"
+            applicationIdSuffix ".scrollpage"
+            versionNameSuffix "-scrollpage"
         }
-        localpage {
+        singlepage {
             dimension "version"
-            applicationIdSuffix ".localpage"
-            versionNameSuffix "-localpage"
-        }
-        controlfetch {
-            dimension "version"
-            applicationIdSuffix ".controlfetch"
-            versionNameSuffix "-controlfetch"
-        }
-        simplefetch {
-            dimension "version"
-            applicationIdSuffix ".simplefetch"
-            versionNameSuffix "-simplefetch"
+            applicationIdSuffix ".singlepage"
+            versionNameSuffix "-singlepage"
         }
     }
 
