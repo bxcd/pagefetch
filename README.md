@@ -9,25 +9,22 @@ This app is built with Android Jetpack and Square Retrofit
 ## Prerequisites
 
 1. Clone the repository by running [git clone https://github.com/rjbx/pagefetch.git]
-2. Move the provided 'keys' resource file into the pagefetch repository path [app/src/main/res/values/]
-3. In Android Studio, select a debug build variant from the BuildVariants tab or from the Build menu
+2. In Android Studio, select a debug build variant from the BuildVariants tab or from the Build menu
 
 ## Description
 
 **Flavors**
 
-Nopage: Fetches and persists full list, then displays sorted unpaginated list data
-
-Localpage:  
-* Fetches and persists full list, then paginates and displays sorted list data
+Singlepage:  
+* Fetches and persists single page to, and loads sorted list from, local database
 * Pagination size can be asynchronously updated by controller
-* Updates are visible when page size is below RV page size
 * Controller orientation can be updated by menu option
 * ListView implementation omitted for brevity
 
-Remotepage:
+Scrollpage:
 * Fetches and paginates sorted remote list data without local persistence
-* Remote data can be paginated by item key, page key or positionally
+* Current data API only designed to support page keyed pagination
+* Item key and positional pagination types are work-in-progress
 * Pagination size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
 * Pagination type can be updated by menu option
