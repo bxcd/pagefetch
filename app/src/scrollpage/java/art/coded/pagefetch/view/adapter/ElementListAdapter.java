@@ -68,7 +68,7 @@ public class ElementListAdapter
         public void bind(Element element) {
             mNameView.setText(element.getName());
             mIdView.setText(element.getId());
-            mListIdView.setText(String.format(Locale.getDefault(), "%d", element.getListId().getScore()));
+            mListIdView.setText(String.format(Locale.getDefault(), "%d", element.getListId().getRating()));
         }
     }
 }
