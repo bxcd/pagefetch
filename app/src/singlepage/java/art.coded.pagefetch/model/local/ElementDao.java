@@ -15,7 +15,7 @@ import art.coded.pagefetch.model.entity.Element;
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) void insert(Element element);
 
-    @Query("SELECT * from element_table ORDER BY /* rating ASC,*/ name")
+    @Query("SELECT * from element_table ORDER BY listId ASC, name")
     DataSource.Factory<Integer, Element> getPaged();
 
     @Query("DELETE from element_table") void deleteAll();
