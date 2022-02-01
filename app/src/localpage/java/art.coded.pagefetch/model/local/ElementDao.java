@@ -15,6 +15,6 @@ import art.coded.pagefetch.model.entity.Element;
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) void insert(Element element);
 
-    @Query("SELECT * from element_table ORDER BY minRating ASC, name")
+    @Query("SELECT * from element_table ORDER BY minRating ASC, charityName")
     DataSource.Factory<Integer, Element> getPaged();
 }
