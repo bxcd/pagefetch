@@ -17,4 +17,6 @@ import art.coded.pagefetch.model.entity.Element;
 
     @Query("SELECT * from element_table ORDER BY /* rating ASC,*/ name")
     DataSource.Factory<Integer, Element> getPaged();
+
+    @Query("DELETE from element_table") void deleteAll();
 }

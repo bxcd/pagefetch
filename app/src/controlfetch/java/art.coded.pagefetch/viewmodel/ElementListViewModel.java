@@ -31,6 +31,7 @@ public class ElementListViewModel extends ViewModel {
         String appId = mApplication.getString(R.string.cn_app_id);
         String appKey  = mApplication.getString(R.string.cn_app_key);
         ElementRepository repository = new ElementRepository(mApplication);
+        repository.deleteAll();
         return (repository.getPagedElements(baseUrl, appId, appKey, pageSize));
     }
 }
