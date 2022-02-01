@@ -5,12 +5,15 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import art.coded.pagefetch.model.entity.Element;
+import art.coded.pagefetch.model.entity.ElementConverters;
 
 /**
  * A database for storing fetched Elements and retrieving stored Elements
  */
+@TypeConverters({ElementConverters.class})
 @Database(entities={Element.class}, version=1, exportSchema=false)
 public abstract class ElementRoomDatabase extends RoomDatabase {
 

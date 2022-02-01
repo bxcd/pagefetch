@@ -18,12 +18,11 @@ public class ElementListViewModel extends ViewModel {
     private static final String LOG_TAG = ElementListViewModel.class.getSimpleName();
 
     // Member variables
-    private ElementRepository mRepository;
     private Application mApplication;
 
     // From application argument instantiates Repository from which LiveData is retrieved from Dao
     public void loadData(Application application) {
-        mRepository = new ElementRepository(application);
+        mApplication = application;
     }
 
     // Provides observable, pagable LiveData to list adapter
@@ -31,6 +30,7 @@ public class ElementListViewModel extends ViewModel {
         String baseUrl = mApplication.getString(R.string.base_url);
         String appId = mApplication.getString(R.string.cn_app_id);
         String appKey  = mApplication.getString(R.string.cn_app_key);
-        return (mRepository.getPagedElements(baseUrl, appId, appKey, pageSize));
+        ElementRepository repository = new ElementRepository(mApplication);
+        return (repository.getPagedElements(baseUrl, appId, appKey, pageSize));
     }
 }
