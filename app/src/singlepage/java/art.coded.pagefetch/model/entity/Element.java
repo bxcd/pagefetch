@@ -21,7 +21,7 @@ public class Element {
     // Member variables
     @NonNull @ColumnInfo(name = "id") @SerializedName("ein")
     @PrimaryKey @Expose private String mId;
-    @SerializedName("currentRating")
+    @ColumnInfo(name = "listId") @SerializedName("currentRating")
     @Expose private ListId mListId;
     @ColumnInfo(name="name") @SerializedName("charityName")
     @Expose private String mName;
