@@ -1,3 +1,4 @@
+import android.app.Activity;
 package art.coded.pagefetch.view.adapter;
 
 import android.app.Activity;

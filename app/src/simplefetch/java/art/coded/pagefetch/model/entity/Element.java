@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
- * An Element object instance with the required tags for interfacing with Dao and Room
+ * An Element object instance with the required tags for interfacing with Retrofit
  */
 @Entity(tableName="element_table")
 public class Element {

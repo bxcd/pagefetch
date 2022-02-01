@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "art.coded.pagefetch"
+        applicationId "art.coded.remotepage"
         minSdk 24
         targetSdk 31
         versionCode 1
@@ -38,10 +38,15 @@ android {
             applicationIdSuffix ".localpage"
             versionNameSuffix "-localpage"
         }
-        nopage {
+        controlfetch {
             dimension "version"
-            applicationIdSuffix ".nopage"
-            versionNameSuffix "-nopage"
+            applicationIdSuffix ".controlfetch"
+            versionNameSuffix "-controlfetch"
+        }
+        simplefetch {
+            dimension "version"
+            applicationIdSuffix ".simplefetch"
+            versionNameSuffix "-simplefetch"
         }
     }
 
