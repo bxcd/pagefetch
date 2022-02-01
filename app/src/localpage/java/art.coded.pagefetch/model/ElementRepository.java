@@ -11,9 +11,9 @@ import java.net.URL;
 import java.util.List;
 
 import art.coded.pagefetch.model.entity.Element;
+import art.coded.pagefetch.model.fetch.ElementDatasourceUtilities;
 import art.coded.pagefetch.model.local.ElementDao;
 import art.coded.pagefetch.model.local.ElementRoomDatabase;
-import art.coded.pagefetch.model.fetch.ElementDatasourceUtilities;
 
 /**
  * Asynchronous interactions for the ViewModel to interact with Element data

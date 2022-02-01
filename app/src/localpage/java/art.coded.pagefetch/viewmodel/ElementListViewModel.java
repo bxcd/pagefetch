@@ -30,7 +30,7 @@ public class ElementListViewModel extends ViewModel {
         mRepository = new ElementRepository(application);
 
         String baseUrl = application.getString(R.string.base_url);
-        String apiPath = application.getString(R.string.api_path);
+        String apiPath = "v2/Organizations";
 
         // Defines datasource URL
         Uri.Builder builder = Uri.parse(baseUrl).buildUpon();
