@@ -80,7 +80,7 @@ public class ElementListAdapter extends RecyclerView.Adapter<ElementListAdapter.
         public void bind(Element element) {
 
             String id = element.getId();
-            Integer rating = element.getListId().getRating();
+            String ratingStr = String.valueOf(element.getListId().getRating());
             String name = element.getName();
             if (name.length() > 70)
                 name = name
@@ -89,7 +89,7 @@ public class ElementListAdapter extends RecyclerView.Adapter<ElementListAdapter.
                         .concat("...");
 
             mIdView.setText(id);
-            mListIdView.setText(rating);
+            mListIdView.setText(ratingStr);
             mNameView.setText(name);
         }
     }
