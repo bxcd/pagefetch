@@ -3,8 +3,6 @@ package art.coded.pagefetch.model.source;
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
 
-import java.util.List;
-
 import art.coded.pagefetch.model.entity.Element;
 import art.coded.pagefetch.model.fetch.FetchApi;
 
