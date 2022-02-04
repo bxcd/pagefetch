@@ -19,7 +19,6 @@ Singlepage:
 * Fetches and persists single page to, and loads sorted list from, local database
 * Pagination size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
-* ListView implementation omitted for brevity
 
 Scrollpage:
 * Fetches and paginates sorted remote list data without local persistence
