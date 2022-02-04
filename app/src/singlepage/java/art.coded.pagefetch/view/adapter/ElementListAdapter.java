@@ -78,9 +78,19 @@ public class ElementListAdapter extends RecyclerView.Adapter<ElementListAdapter.
 
         // Helper for populating child views from Element
         public void bind(Element element) {
-            mNameView.setText(element.getName());
-            mIdView.setText(element.getId());
-            mListIdView.setText(String.format(Locale.getDefault(), "%d", element.getListId().getRating()));
+
+            String id = element.getId();
+            Integer rating = element.getListId().getRating();
+            String name = element.getName();
+            if (name.length() > 70)
+                name = name
+                        .substring(0, 70)
+                        .substring(0, name.lastIndexOf(" "))
+                        .concat("...");
+
+            mIdView.setText(id);
+            mListIdView.setText(rating);
+            mNameView.setText(name);
         }
     }
 }
