@@ -211,7 +211,7 @@ public class ElementListFragment
             case R.id.action_type:
 
                 mTypeKey = mSharedPreferences.getInt(
-                        getString(R.string.sp_key_datasourcetype), 2);
+                        getString(R.string.sp_key_datasourcetype), 0);
                 // Instantiate and load ViewModel
                 mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
 
