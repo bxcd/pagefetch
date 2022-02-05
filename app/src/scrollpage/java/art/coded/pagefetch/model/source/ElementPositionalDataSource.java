@@ -34,12 +34,15 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
 
         Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true);
 
+        final int current = 0;
+        final int maxSize = 725;
+
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                callback.onResult(responseBody, params.requestedStartPosition, 100);
+                callback.onResult(responseBody, current, maxSize);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
