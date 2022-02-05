@@ -13,7 +13,9 @@ public interface FetchApi {
     Call<List<Element>> getPositionalElements(
             @Query("app_id") String appId,
             @Query("app_key") String appKey,
-            @Query("rated") boolean rated
+            @Query("rated") boolean rated,
+            @Query("pageNum") int pageNum,
+            @Query("pageSize") int pageSize
     );
 
     @GET("/v2/Organizations")
