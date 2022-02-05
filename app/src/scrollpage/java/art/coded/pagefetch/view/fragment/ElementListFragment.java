@@ -243,7 +243,7 @@ public class ElementListFragment
                         "Now paging %s keyed datasource",
                         ElementDataSourceFactory.DatasourceType.values()[mTypeKey]
                 );
-                Toast.makeText(getContext(), type, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), type, Toast.LENGTH_SHORT).show();
 
                 mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
 
