@@ -90,7 +90,7 @@ public class ElementListFragment
         setHasOptionsMenu(true);
 
         // Get page size shared pref and inflate/populate page size controller views
-        mPageSize = mSharedPreferences.getInt(getString(R.string.sp_key_pagesize), 15);
+        mPageSize = mSharedPreferences.getInt(getString(R.string.sp_key_pagesize), 10);
         Button incrementButton = binding.incrementButton;
         Button decrementButton = binding.decrementButton;
         mEditText = binding.editText;
@@ -140,14 +140,16 @@ public class ElementListFragment
     @Override public void onClick(View v) {
         int id = v.getId();
         boolean pageSizeChanged = false;
+        int adjustmentAmount =
+                (mTypeKey == ElementDataSourceFactory.DatasourceType.POSITION.ordinal()) ? 10 : 1;
         switch(id) {
             case R.id.increment_button:
                 pageSizeChanged = true;
-                mPageSize++;
+                mPageSize += adjustmentAmount;
                 break;
             case R.id.decrement_button:
                 pageSizeChanged = true;
-                if (mPageSize > 1) mPageSize--;
+                if (mPageSize > adjustmentAmount) mPageSize -= adjustmentAmount;
                 break;
             default:
         }
@@ -238,7 +240,7 @@ public class ElementListFragment
                 mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
 
                 LinearLayout controllerWrapper = mRootView.findViewById(R.id.controller_wrapper);
-                if (mTypeKey == 0) controllerWrapper.setVisibility(View.VISIBLE);
+                if (mTypeKey != 1) controllerWrapper.setVisibility(View.VISIBLE);
                 else controllerWrapper.setVisibility(View.GONE);
         }
         return super.onOptionsItemSelected(item);
