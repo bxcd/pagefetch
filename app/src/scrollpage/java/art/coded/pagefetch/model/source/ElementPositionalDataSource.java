@@ -32,7 +32,7 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     public void loadInitial(@NonNull LoadInitialParams params,
                             @NonNull LoadInitialCallback<Element> callback) {
 
-        final int pageSize = params.requestedLoadSize;
+        final int pageSize = params.requestedLoadSize / 3;
         final int maxSize = 725;
 
         Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true, 1, pageSize);
