@@ -90,7 +90,7 @@ public class ElementListFragment
         setHasOptionsMenu(true);
 
         // Get page size shared pref and inflate/populate page size controller views
-        mPageSize = mSharedPreferences.getInt(getString(R.string.sp_key_pagesize), 15);
+        mPageSize = mSharedPreferences.getInt(getString(R.string.sp_key_pagesize), 25);
         Button incrementButton = binding.incrementButton;
         Button decrementButton = binding.decrementButton;
         mEditText = binding.editText;
@@ -123,10 +123,13 @@ public class ElementListFragment
         if (v.getId() != R.id.edit_text || actionId != EditorInfo.IME_ACTION_DONE) return false;
         mEditText.clearFocus();
         String inputStr = mEditText.getText().toString();
-        try {
+        if    (mTypeKey == ElementDataSourceFactory.DatasourceType.POSITION.ordinal()) mPageSize = 25;
+        else try {
             int inputInt = Integer.parseInt(inputStr);
             if (inputInt > 1 && inputInt < PagedList.Config.MAX_SIZE_UNBOUNDED) mPageSize = inputInt;
-        } catch (NumberFormatException e) { Log.e(LOG_TAG, e.getMessage()); }
+        } catch (NumberFormatException e) {
+            Log.e(LOG_TAG, e.getMessage());
+        }
         mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
         if (mMethodManager != null) mMethodManager.toggleSoftInput(0,0);
         mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
@@ -140,14 +143,26 @@ public class ElementListFragment
     @Override public void onClick(View v) {
         int id = v.getId();
         boolean pageSizeChanged = false;
+        boolean isPositionalDatatype =
+                mTypeKey == ElementDataSourceFactory.DatasourceType.POSITION.ordinal();
         switch(id) {
             case R.id.increment_button:
                 pageSizeChanged = true;
-                mPageSize++;
+                if (isPositionalDatatype) {
+                    switch (mPageSize) {
+                        case 5: mPageSize = 25; break;
+                        case 25: mPageSize = 29; break;
+                    }
+                } else mPageSize++;
                 break;
             case R.id.decrement_button:
                 pageSizeChanged = true;
-                if (mPageSize > 1) mPageSize--;
+                if (isPositionalDatatype) {
+                    switch (mPageSize) {
+                        case 25: mPageSize = 5; break;
+                        case 29: mPageSize = 25;
+                    }
+                } else if (mPageSize > 1) mPageSize--;
                 break;
             default:
         }
@@ -216,6 +231,9 @@ public class ElementListFragment
                 mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
 
                 if (mTypeKey == 2) mTypeKey = 0; else ++mTypeKey;
+                mPageSize = 25;
+                mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
+                mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
                 mSharedPreferences
                         .edit()
                         .putInt(getString(R.string.sp_key_datasourcetype), mTypeKey)
@@ -238,7 +256,7 @@ public class ElementListFragment
                 mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
 
                 LinearLayout controllerWrapper = mRootView.findViewById(R.id.controller_wrapper);
-                if (mTypeKey == 0) controllerWrapper.setVisibility(View.VISIBLE);
+                if (mTypeKey != 1) controllerWrapper.setVisibility(View.VISIBLE);
                 else controllerWrapper.setVisibility(View.GONE);
         }
         return super.onOptionsItemSelected(item);
