@@ -218,6 +218,9 @@ public class ElementListFragment
                 mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
 
                 if (mTypeKey == 2) mTypeKey = 0; else ++mTypeKey;
+                mPageSize = 10;
+                mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
+                mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
                 mSharedPreferences
                         .edit()
                         .putInt(getString(R.string.sp_key_datasourcetype), mTypeKey)
