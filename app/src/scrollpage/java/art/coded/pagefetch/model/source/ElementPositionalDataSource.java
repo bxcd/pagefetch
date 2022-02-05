@@ -32,17 +32,17 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     public void loadInitial(@NonNull LoadInitialParams params,
                             @NonNull LoadInitialCallback<Element> callback) {
 
-        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true);
-
-        final int current = 0;
+        final int pageSize = params.requestedLoadSize;
         final int maxSize = 725;
+
+        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true, 1, pageSize);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
                     @NonNull Call<List<Element>> call, @NonNull Response<List<Element>> response) {
                 List<Element> responseBody = response.body();
                 if (responseBody == null) return;
-                callback.onResult(responseBody, current, maxSize);
+                callback.onResult(responseBody, 0, maxSize);
                 Log.v(LOG_TAG, String.format(
                         "Call generated callback response size of %d with contents of %s",
                         responseBody.size(),
@@ -61,7 +61,10 @@ public class ElementPositionalDataSource extends PositionalDataSource<Element> {
     @Override
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Element> callback) {
 
-        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true);
+        final int pageSize = params.loadSize;
+        final int pageNum = params.startPosition / pageSize;
+
+        Call<List<Element>> call = mApi.getPositionalElements(mAppId, mAppKey, true, pageNum, pageSize);
 
         call.enqueue(new Callback<List<Element>>() {
             @Override public void onResponse(
