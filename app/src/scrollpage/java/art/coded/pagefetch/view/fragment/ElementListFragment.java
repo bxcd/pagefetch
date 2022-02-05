@@ -150,8 +150,8 @@ public class ElementListFragment
                 pageSizeChanged = true;
                 if (isPositionalDatatype) {
                     switch (mPageSize) {
-                        case 5: mPageSize = 25; break;
-                        case 25: mPageSize = 29; break;
+                        case 1: mPageSize = 5; break;
+                        case 5: mPageSize = 25;
                     }
                 } else mPageSize++;
                 break;
@@ -159,8 +159,8 @@ public class ElementListFragment
                 pageSizeChanged = true;
                 if (isPositionalDatatype) {
                     switch (mPageSize) {
-                        case 25: mPageSize = 5; break;
-                        case 29: mPageSize = 25;
+                        case 5: mPageSize = 1; break;
+                        case 25: mPageSize = 5;
                     }
                 } else if (mPageSize > 1) mPageSize--;
                 break;
