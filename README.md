@@ -1,4 +1,4 @@
-# Page Fetch
+# pagefetch
 
 **An app for demonstrating local and remote paging of data fetched from a remote datasource**
 
@@ -22,8 +22,6 @@ Singlepage:
 
 Scrollpage:
 * Fetches and paginates sorted remote list data without local persistence
-* Current data API only designed to support page keyed pagination
-* Item key and positional pagination types are work-in-progress
 * Pagination size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
 * Pagination type can be updated by menu option
