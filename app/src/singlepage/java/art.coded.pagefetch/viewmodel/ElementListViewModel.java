@@ -30,8 +30,8 @@ public class ElementListViewModel extends ViewModel {
     // Provides observable, pageable LiveData to list adapter
     public LiveData<List<Element>> elementList(Integer pageSize) {
         String baseUrl = mApplication.getString(R.string.base_url);
-        String appId = mApplication.getString(R.string.cn_app_id);
-        String appKey  = mApplication.getString(R.string.cn_app_key);
+        String appId = mApplication.getString(R.string.app_id);
+        String appKey  = mApplication.getString(R.string.app_key);
         ElementRepository repository = new ElementRepository(mApplication);
         repository.deleteAll();
         return (repository.getPagedElements(baseUrl, appId, appKey, pageSize));
