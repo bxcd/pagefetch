@@ -290,6 +290,7 @@ public class ElementListFragment
                 new ElementListAdapter(new ElementComparator(), mFragmentActivity);
         mRecyclerView.setAdapter(mPagedListAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+        mPagedListAdapter.setStateRestorationPolicy(RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY);
     }
 
     private void initializeResourceStrings() {
