@@ -224,12 +224,8 @@ public class ElementListFragment
 
                 initAttachListAdapter();
 
-                ElementDataSourceFactory.DatasourceType type =
-                        ElementDataSourceFactory.DatasourceType.values()[mTypeKey];
-                ElementRepository repository = new ElementRepository(type);
                 // Instantiate and load ViewModel
-                mListViewModel = new ViewModelProvider(this,
-                        new ElementListViewModelFactory(repository)).get(ElementListViewModel.class);
+                mListViewModel = initializeViewModel(this, mTypeKey);
                 // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
                 mListViewModel
                         .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
