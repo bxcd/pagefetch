@@ -26,7 +26,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStore;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,55 +78,29 @@ public class ElementListFragment
         binding = FragmentListBinding.inflate(inflater, container, false);
         mRootView = binding.getRoot();
 
+        // Enable options menu
+        setHasOptionsMenu(true);
+
         // Get Activity reference for context and assign references to shared prefs and method manager
         mFragmentActivity = requireActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mFragmentActivity);
         mMethodManager = (InputMethodManager) mFragmentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // Set controller orientation based on preference
-        mControlsFlipped = mSharedPreferences.getBoolean(
-                getString(R.string.sp_key_controlsflipped), false);
-        if (mControlsFlipped) {
-            ConstraintSet set = new ConstraintSet();
-            set.clone(mRootView);
-            set.connect(R.id.controller_wrapper, ConstraintSet.RIGHT, ConstraintSet.UNSET, ConstraintSet.RIGHT, 0);
-            set.connect(R.id.controller_wrapper, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 32);
-            set.applyTo(mRootView);
-        }
+        orientController(mRootView, mControlsFlipped);
 
-        // Enable options menu
-        setHasOptionsMenu(true);
+        initializeSharedPreferences();
+        initializeResourceStrings();
 
         // Get page size shared pref and inflate/populate page size controller views
-        mPageSize = mSharedPreferences.getInt(getString(R.string.sp_key_pagesize), 25);
-        Button incrementButton = binding.incrementButton;
-        Button decrementButton = binding.decrementButton;
-        mEditText = binding.editText;
-        incrementButton.setOnClickListener(this);
-        decrementButton.setOnClickListener(this);
-        mEditText.setOnEditorActionListener(this);
-        mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
+        prepareControllerViews();
 
         // Instantiate amd format RecyclerView and attach ListAdapter to RecyclerView
         mRecyclerView = binding.rvList;
-        mPagedListAdapter =
-                new ElementListAdapter(new ElementComparator(), mFragmentActivity);
-        mRecyclerView.setAdapter(mPagedListAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
-
-        mTypeKey = mSharedPreferences.getInt(
-                getString(R.string.sp_key_datasourcetype), 0);
-
-        mBaseUrl = requireContext().getString(R.string .base_url);
-        mAppId = requireContext().getString(R.string.app_id);
-        mAppKey  = requireContext().getString(R.string.app_key);
-        ElementDataSourceFactory.DatasourceType type =
-                ElementDataSourceFactory.DatasourceType.values()[mTypeKey];
-        ElementRepository repository = new ElementRepository(type);
+        attachListAdaptertoRV();
 
         // Instantiate and load ViewModel
-        mListViewModel = new ViewModelProvider(this,
-                new ElementListViewModelFactory(repository)).get(ElementListViewModel.class);
+        ElementListViewModel mViewModel = initializeViewModel(this, mTypeKey);
 
         // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
         mListViewModel
@@ -265,18 +242,15 @@ public class ElementListFragment
                 Toast.makeText(getContext(), typeStr, Toast.LENGTH_SHORT).show();
 
                 mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
-
                 mRecyclerView.setAdapter(mPagedListAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
 
                 ElementDataSourceFactory.DatasourceType type =
                         ElementDataSourceFactory.DatasourceType.values()[mTypeKey];
                 ElementRepository repository = new ElementRepository(type);
-
                 // Instantiate and load ViewModel
                 mListViewModel = new ViewModelProvider(this,
                         new ElementListViewModelFactory(repository)).get(ElementListViewModel.class);
-
                 // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
                 mListViewModel
                         .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
@@ -287,5 +261,59 @@ public class ElementListFragment
                 else controllerWrapper.setVisibility(View.GONE);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private static void orientController(ConstraintLayout layout, boolean controlsFlipped) {
+        if (controlsFlipped) {
+            ConstraintSet set = new ConstraintSet();
+            set.clone(layout);
+            set.connect(R.id.controller_wrapper, ConstraintSet.RIGHT, ConstraintSet.UNSET, ConstraintSet.RIGHT, 0);
+            set.connect(R.id.controller_wrapper, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 32);
+            set.applyTo(layout);
+        }
+    }
+
+    private static ElementRepository repoFromType(Integer typeKey) {
+        ElementDataSourceFactory.DatasourceType type =
+                ElementDataSourceFactory.DatasourceType.values()[typeKey];
+        return new ElementRepository(type);
+    }
+
+    private static ElementListViewModel initializeViewModel(
+            ViewModelStoreOwner owner, Integer typeKey) {
+        return new ViewModelProvider(owner,
+                new ElementListViewModelFactory(repoFromType(typeKey))).get(ElementListViewModel.class);
+    }
+
+    private void prepareControllerViews() {
+        if (binding == null || mPageSize == null) return;
+        Button incrementButton = binding.incrementButton;
+        Button decrementButton = binding.decrementButton;
+        mEditText = binding.editText;
+        incrementButton.setOnClickListener(this);
+        decrementButton.setOnClickListener(this);
+        mEditText.setOnEditorActionListener(this);
+        mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
+    }
+
+    private void attachListAdaptertoRV() {
+        if (mPagedListAdapter == null || mRecyclerView == null) return;
+        mPagedListAdapter =
+                new ElementListAdapter(new ElementComparator(), mFragmentActivity);
+        mRecyclerView.setAdapter(mPagedListAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+    }
+
+    private void initializeResourceStrings() {
+        mBaseUrl = requireContext().getString(R.string .base_url);
+        mAppId = requireContext().getString(R.string.app_id);
+        mAppKey  = requireContext().getString(R.string.app_key);
+    }
+
+    private void initializeSharedPreferences() {
+        mControlsFlipped = mSharedPreferences.getBoolean(
+                getString(R.string.sp_key_controlsflipped), false);
+        mPageSize = mSharedPreferences.getInt(getString(R.string.sp_key_pagesize), 25);
+        mTypeKey = mSharedPreferences.getInt(getString(R.string.sp_key_datasourcetype), 0);
     }
 }
