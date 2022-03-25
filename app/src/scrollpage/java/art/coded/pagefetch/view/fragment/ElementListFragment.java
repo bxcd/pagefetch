@@ -111,16 +111,7 @@ public class ElementListFragment
     // Handler for interactions with EditText view
     @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (v.getId() != R.id.edit_text || actionId != EditorInfo.IME_ACTION_DONE) return false;
-        mEditText.clearFocus();
-        String inputStr = mEditText.getText().toString();
-        if    (mTypeKey == ElementDataSourceFactory.DatasourceType.POSITION.ordinal()) mPageSize = 25;
-        else try {
-            int inputInt = Integer.parseInt(inputStr);
-            if (inputInt > 1 && inputInt < PagedList.Config.MAX_SIZE_UNBOUNDED) mPageSize = inputInt;
-        } catch (NumberFormatException e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
-        mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
+        mPageSize = handleEditTextInput(v, mPageSize, mTypeKey);
         if (mMethodManager != null) mMethodManager.toggleSoftInput(0,0);
         mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
 
@@ -261,6 +252,21 @@ public class ElementListFragment
                 ElementDataSourceFactory.DatasourceType.values()[typeKey]
         );
         Toast.makeText(context, typeStr, Toast.LENGTH_SHORT).show();
+    }
+
+    private static Integer handleEditTextInput(TextView v, Integer initialPageSize, Integer typeKey) {
+        int pageSize = initialPageSize;
+        v.clearFocus();
+        String inputStr = v.getText().toString();
+        if    (typeKey == ElementDataSourceFactory.DatasourceType.POSITION.ordinal()) pageSize = 25;
+        else try {
+            int inputInt = Integer.parseInt(inputStr);
+            if (inputInt > 1 && inputInt < PagedList.Config.MAX_SIZE_UNBOUNDED) pageSize = inputInt;
+        } catch (NumberFormatException e) {
+            Log.e(LOG_TAG, e.getMessage());
+        }
+        v.setText(String.format(Locale.getDefault(), "%d", pageSize));
+        return pageSize;
     }
 
     private static void orientIcon(Drawable icon, boolean controlsFlipped) {
