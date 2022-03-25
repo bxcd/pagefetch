@@ -2,8 +2,10 @@ package art.coded.pagefetch.viewmodel;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.PagedList;
 
 import art.coded.pagefetch.R;
@@ -23,18 +25,13 @@ public class ElementListViewModel extends ViewModel {
     private Application mApplication;
 
     // From application argument instantiates Repository from which LiveData is retrieved from Dao
-    public void loadData(Application application, Integer typeKey) {
-        ElementDataSourceFactory.DatasourceType type =
-                ElementDataSourceFactory.DatasourceType.values()[typeKey];
-        mRepository = new ElementRepository(type);
-        mApplication = application;
+    public ElementListViewModel(ElementRepository repository) {
+        mRepository = repository;
     }
 
     // Provides observable, pageable LiveData to list adapter
-    public LiveData<PagedList<Element>> elementList(Integer pageSize) {
-        String baseUrl = mApplication.getString(R.string .base_url);
-        String appId = mApplication.getString(R.string.app_id);
-        String appKey  = mApplication.getString(R.string.app_key);
+    public LiveData<PagedList<Element>> elementList(
+            Integer pageSize, String baseUrl, String appId, String appKey) {
         return (mRepository.getPagedElements(pageSize, baseUrl, appId, appKey));
     }
 
