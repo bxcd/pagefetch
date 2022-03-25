@@ -11,7 +11,6 @@ import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Locale;
 
 import art.coded.pagefetch.R;
 import art.coded.pagefetch.model.entity.Element;
