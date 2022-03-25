@@ -257,17 +257,6 @@ public class ElementListFragment
                 new ElementListViewModelFactory(repoFromType(typeKey))).get(ElementListViewModel.class);
     }
 
-    private void prepareControllerViews() {
-        if (binding == null || mPageSize == null) return;
-        Button incrementButton = binding.incrementButton;
-        Button decrementButton = binding.decrementButton;
-        mEditText = binding.editText;
-        incrementButton.setOnClickListener(this);
-        decrementButton.setOnClickListener(this);
-        mEditText.setOnEditorActionListener(this);
-        mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
-    }
-
     private static void reorientController(ConstraintLayout layout, Drawable icon, boolean controlsFlipped) {
         int iconDirection = controlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
         int removedSide = controlsFlipped ? ConstraintSet.RIGHT : ConstraintSet.LEFT;
@@ -284,8 +273,19 @@ public class ElementListFragment
         set.applyTo(layout);
     }
 
+    private void prepareControllerViews() {
+        if (binding == null || mPageSize == null) return;
+        Button incrementButton = binding.incrementButton;
+        Button decrementButton = binding.decrementButton;
+        mEditText = binding.editText;
+        incrementButton.setOnClickListener(this);
+        decrementButton.setOnClickListener(this);
+        mEditText.setOnEditorActionListener(this);
+        mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
+    }
+
     private void initAttachListAdapter() {
-        if (mPagedListAdapter == null || mRecyclerView == null) return;
+        if (mRecyclerView == null) return;
         mPagedListAdapter =
                 new ElementListAdapter(new ElementComparator(), mFragmentActivity);
         mRecyclerView.setAdapter(mPagedListAdapter);
