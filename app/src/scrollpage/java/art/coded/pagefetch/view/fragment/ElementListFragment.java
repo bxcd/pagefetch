@@ -35,10 +35,12 @@ import java.util.Locale;
 
 import art.coded.pagefetch.R;
 import art.coded.pagefetch.databinding.FragmentListBinding;
+import art.coded.pagefetch.model.ElementRepository;
 import art.coded.pagefetch.model.entity.ElementComparator;
 import art.coded.pagefetch.model.source.ElementDataSourceFactory;
 import art.coded.pagefetch.view.adapter.ElementListAdapter;
 import art.coded.pagefetch.viewmodel.ElementListViewModel;
+import art.coded.pagefetch.viewmodel.ElementListViewModelFactory;
 
 /**
  * Manages the UI visuals and interactions inside the content view of ListActivity
@@ -61,6 +63,9 @@ public class ElementListFragment
     private boolean mControlsFlipped;
     private Integer mPageSize;
     private Integer mTypeKey;
+    private String mBaseUrl;
+    private String mAppId;
+    private String mAppKey;
 
     // Inflates Views and defines UI objects and their interactions
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -108,12 +113,22 @@ public class ElementListFragment
 
         mTypeKey = mSharedPreferences.getInt(
                 getString(R.string.sp_key_datasourcetype), 0);
+
+        mBaseUrl = requireContext().getString(R.string .base_url);
+        mAppId = requireContext().getString(R.string.app_id);
+        mAppKey  = requireContext().getString(R.string.app_key);
+        ElementDataSourceFactory.DatasourceType type =
+                ElementDataSourceFactory.DatasourceType.values()[mTypeKey];
+        ElementRepository repository = new ElementRepository(type);
+
         // Instantiate and load ViewModel
-        mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
-        mListViewModel.loadData(mFragmentActivity.getApplication(), mTypeKey);
+        mListViewModel = new ViewModelProvider(this,
+                new ElementListViewModelFactory(repository)).get(ElementListViewModel.class);
 
         // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
-        mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
+        mListViewModel
+                .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
+                .observe(mFragmentActivity, mPagedListAdapter::submitList);
 
         return mRootView;
     }
@@ -135,7 +150,10 @@ public class ElementListFragment
         mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
 
         // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
-        mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
+        mListViewModel
+                .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
+                .observe(mFragmentActivity, mPagedListAdapter::submitList);
+
         return true;
     }
 
@@ -178,7 +196,9 @@ public class ElementListFragment
 
             // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
             mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
-            mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
+            mListViewModel
+                    .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
+                    .observe(mFragmentActivity, mPagedListAdapter::submitList);
         }
     }
 
@@ -227,8 +247,7 @@ public class ElementListFragment
 
                 mTypeKey = mSharedPreferences.getInt(
                         getString(R.string.sp_key_datasourcetype), 0);
-                // Instantiate and load ViewModel
-                mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
+
 
                 if (mTypeKey == 2) mTypeKey = 0; else ++mTypeKey;
                 mPageSize = 25;
@@ -239,21 +258,29 @@ public class ElementListFragment
                         .putInt(getString(R.string.sp_key_datasourcetype), mTypeKey)
                         .apply();
 
-                String type = String.format(
+                String typeStr = String.format(
                         "Now paging %s keyed datasource",
                         ElementDataSourceFactory.DatasourceType.values()[mTypeKey]
                 );
-                Toast.makeText(getContext(), type, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), typeStr, Toast.LENGTH_SHORT).show();
 
                 mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
 
                 mRecyclerView.setAdapter(mPagedListAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
 
-                mListViewModel.loadData(mFragmentActivity.getApplication(), mTypeKey);
+                ElementDataSourceFactory.DatasourceType type =
+                        ElementDataSourceFactory.DatasourceType.values()[mTypeKey];
+                ElementRepository repository = new ElementRepository(type);
+
+                // Instantiate and load ViewModel
+                mListViewModel = new ViewModelProvider(this,
+                        new ElementListViewModelFactory(repository)).get(ElementListViewModel.class);
 
                 // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
-                mListViewModel.elementList(mPageSize).observe(mFragmentActivity, mPagedListAdapter::submitList);
+                mListViewModel
+                        .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
+                        .observe(mFragmentActivity, mPagedListAdapter::submitList);
 
                 LinearLayout controllerWrapper = mRootView.findViewById(R.id.controller_wrapper);
                 if (mTypeKey != 1) controllerWrapper.setVisibility(View.VISIBLE);
