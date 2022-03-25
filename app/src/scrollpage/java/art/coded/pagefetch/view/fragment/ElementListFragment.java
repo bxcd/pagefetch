@@ -164,13 +164,10 @@ public class ElementListFragment
             mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
             mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
 
-            mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
-
-            mRecyclerView.setAdapter(mPagedListAdapter);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+            initAttachListAdapter();
 
             // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
-            mListViewModel = new ViewModelProvider(this).get(ElementListViewModel.class);
+            mListViewModel = initializeViewModel(this, mTypeKey);
             mListViewModel
                     .elementList(mPageSize, mBaseUrl, mAppId, mAppKey)
                     .observe(mFragmentActivity, mPagedListAdapter::submitList);
