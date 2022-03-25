@@ -26,9 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,7 +95,7 @@ public class ElementListFragment
 
         // Instantiate amd format RecyclerView and attach ListAdapter to RecyclerView
         mRecyclerView = binding.rvList;
-        attachListAdaptertoRV();
+        initAttachListAdapter();
 
         // Instantiate and load ViewModel
         ElementListViewModel mViewModel = initializeViewModel(this, mTypeKey);
@@ -202,38 +200,21 @@ public class ElementListFragment
 
             case R.id.action_controls:
 
-            mControlsFlipped = !mControlsFlipped;
-            mSharedPreferences.edit().putBoolean(getString(R.string.sp_key_controlsflipped), mControlsFlipped).apply();
-            int iconDirection = mControlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
-            int removedSide = mControlsFlipped ? ConstraintSet.RIGHT : ConstraintSet.LEFT;
-            int addedSide = mControlsFlipped ? ConstraintSet.LEFT : ConstraintSet.RIGHT;
-
-            Drawable icon = item.getIcon();
-            icon.setAutoMirrored(true);
-            icon.setLayoutDirection(iconDirection);
-
-            int wrapperId = R.id.controller_wrapper;
-            ConstraintSet set = new ConstraintSet();
-            set.clone(mRootView);
-            set.connect(wrapperId, removedSide, ConstraintSet.UNSET, removedSide, 0);
-            set.connect(wrapperId, addedSide, ConstraintSet.PARENT_ID, addedSide, 32);
-            set.applyTo(mRootView);
-            break;
+                mControlsFlipped = !mControlsFlipped;
+                mSharedPreferences.edit().putBoolean(getString(R.string.sp_key_controlsflipped), mControlsFlipped).apply();
+                reorientController(mRootView, item.getIcon(), mControlsFlipped);
+                break;
 
             case R.id.action_type:
 
                 mTypeKey = mSharedPreferences.getInt(
                         getString(R.string.sp_key_datasourcetype), 0);
 
-
                 if (mTypeKey == 2) mTypeKey = 0; else ++mTypeKey;
                 mPageSize = 25;
                 mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
                 mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
-                mSharedPreferences
-                        .edit()
-                        .putInt(getString(R.string.sp_key_datasourcetype), mTypeKey)
-                        .apply();
+                mSharedPreferences.edit().putInt(getString(R.string.sp_key_datasourcetype), mTypeKey).apply();
 
                 String typeStr = String.format(
                         "Now paging %s keyed datasource",
@@ -241,9 +222,7 @@ public class ElementListFragment
                 );
                 Toast.makeText(getContext(), typeStr, Toast.LENGTH_SHORT).show();
 
-                mPagedListAdapter = new ElementListAdapter(new ElementComparator(), mFragmentActivity);
-                mRecyclerView.setAdapter(mPagedListAdapter);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(mFragmentActivity));
+                initAttachListAdapter();
 
                 ElementDataSourceFactory.DatasourceType type =
                         ElementDataSourceFactory.DatasourceType.values()[mTypeKey];
@@ -296,7 +275,23 @@ public class ElementListFragment
         mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
     }
 
-    private void attachListAdaptertoRV() {
+    private static void reorientController(ConstraintLayout layout, Drawable icon, boolean controlsFlipped) {
+        int iconDirection = controlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
+        int removedSide = controlsFlipped ? ConstraintSet.RIGHT : ConstraintSet.LEFT;
+        int addedSide = controlsFlipped ? ConstraintSet.LEFT : ConstraintSet.RIGHT;
+
+        icon.setAutoMirrored(true);
+        icon.setLayoutDirection(iconDirection);
+
+        int wrapperId = R.id.controller_wrapper;
+        ConstraintSet set = new ConstraintSet();
+        set.clone(layout);
+        set.connect(wrapperId, removedSide, ConstraintSet.UNSET, removedSide, 0);
+        set.connect(wrapperId, addedSide, ConstraintSet.PARENT_ID, addedSide, 32);
+        set.applyTo(layout);
+    }
+
+    private void initAttachListAdapter() {
         if (mPagedListAdapter == null || mRecyclerView == null) return;
         mPagedListAdapter =
                 new ElementListAdapter(new ElementComparator(), mFragmentActivity);
