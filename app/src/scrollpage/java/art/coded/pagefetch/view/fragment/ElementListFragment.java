@@ -184,8 +184,7 @@ public class ElementListFragment
     @Override public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.list, menu);
         Drawable icon = menu.getItem(0).getIcon();
-        icon.setAutoMirrored(true);
-        icon.setLayoutDirection(mControlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+        orientIcon(icon, mControlsFlipped);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -199,7 +198,8 @@ public class ElementListFragment
 
                 mControlsFlipped = !mControlsFlipped;
                 mSharedPreferences.edit().putBoolean(getString(R.string.sp_key_controlsflipped), mControlsFlipped).apply();
-                reorientController(mRootView, item.getIcon(), mControlsFlipped);
+                orientIcon(item.getIcon(), mControlsFlipped);
+                orientController(mRootView, mControlsFlipped);
                 break;
 
             case R.id.action_type:
@@ -236,13 +236,15 @@ public class ElementListFragment
     }
 
     private static void orientController(ConstraintLayout layout, boolean controlsFlipped) {
-        if (controlsFlipped) {
-            ConstraintSet set = new ConstraintSet();
-            set.clone(layout);
-            set.connect(R.id.controller_wrapper, ConstraintSet.RIGHT, ConstraintSet.UNSET, ConstraintSet.RIGHT, 0);
-            set.connect(R.id.controller_wrapper, ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 32);
-            set.applyTo(layout);
-        }
+        int removedSide = controlsFlipped ? ConstraintSet.RIGHT : ConstraintSet.LEFT;
+        int addedSide = controlsFlipped ? ConstraintSet.LEFT : ConstraintSet.RIGHT;
+
+        int wrapperId = R.id.controller_wrapper;
+        ConstraintSet set = new ConstraintSet();
+        set.clone(layout);
+        set.connect(wrapperId, removedSide, ConstraintSet.UNSET, removedSide, 0);
+        set.connect(wrapperId, addedSide, ConstraintSet.PARENT_ID, addedSide, 32);
+        set.applyTo(layout);
     }
 
     private static ElementRepository repoFromType(Integer typeKey) {
@@ -257,20 +259,11 @@ public class ElementListFragment
                 new ElementListViewModelFactory(repoFromType(typeKey))).get(ElementListViewModel.class);
     }
 
-    private static void reorientController(ConstraintLayout layout, Drawable icon, boolean controlsFlipped) {
+    private static void orientIcon(Drawable icon, boolean controlsFlipped) {
         int iconDirection = controlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
-        int removedSide = controlsFlipped ? ConstraintSet.RIGHT : ConstraintSet.LEFT;
-        int addedSide = controlsFlipped ? ConstraintSet.LEFT : ConstraintSet.RIGHT;
 
         icon.setAutoMirrored(true);
         icon.setLayoutDirection(iconDirection);
-
-        int wrapperId = R.id.controller_wrapper;
-        ConstraintSet set = new ConstraintSet();
-        set.clone(layout);
-        set.connect(wrapperId, removedSide, ConstraintSet.UNSET, removedSide, 0);
-        set.connect(wrapperId, addedSide, ConstraintSet.PARENT_ID, addedSide, 32);
-        set.applyTo(layout);
     }
 
     private void prepareControllerViews() {
