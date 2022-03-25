@@ -213,11 +213,7 @@ public class ElementListFragment
                 mEditText.setText(String.format(Locale.getDefault(), "%d", mPageSize));
                 mSharedPreferences.edit().putInt(getString(R.string.sp_key_datasourcetype), mTypeKey).apply();
 
-                String typeStr = String.format(
-                        "Now paging %s keyed datasource",
-                        ElementDataSourceFactory.DatasourceType.values()[mTypeKey]
-                );
-                Toast.makeText(getContext(), typeStr, Toast.LENGTH_SHORT).show();
+                showDatasourceChangeToast(requireContext(), mTypeKey);
 
                 initAttachListAdapter();
 
@@ -257,6 +253,14 @@ public class ElementListFragment
             ViewModelStoreOwner owner, Integer typeKey) {
         return new ViewModelProvider(owner,
                 new ElementListViewModelFactory(repoFromType(typeKey))).get(ElementListViewModel.class);
+    }
+
+    private static void showDatasourceChangeToast(Context context, Integer typeKey) {
+        String typeStr = String.format(
+                "Now paging %s keyed datasource",
+                ElementDataSourceFactory.DatasourceType.values()[typeKey]
+        );
+        Toast.makeText(context, typeStr, Toast.LENGTH_SHORT).show();
     }
 
     private static void orientIcon(Drawable icon, boolean controlsFlipped) {
