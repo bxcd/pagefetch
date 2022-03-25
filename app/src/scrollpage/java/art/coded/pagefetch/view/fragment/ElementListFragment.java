@@ -56,7 +56,6 @@ public class ElementListFragment
     private FragmentActivity mFragmentActivity;
     private SharedPreferences mSharedPreferences;
     private ElementListAdapter mPagedListAdapter;
-    private InputMethodManager mMethodManager;
     private FragmentListBinding binding;
     private ConstraintLayout mRootView;
     private RecyclerView mRecyclerView;
@@ -82,7 +81,6 @@ public class ElementListFragment
         // Get Activity reference for context and assign references to shared prefs and method manager
         mFragmentActivity = requireActivity();
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(mFragmentActivity);
-        mMethodManager = (InputMethodManager) mFragmentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // Set controller orientation based on preference
         orientController(mRootView, mControlsFlipped);
@@ -111,8 +109,11 @@ public class ElementListFragment
     // Handler for interactions with EditText view
     @Override public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (v.getId() != R.id.edit_text || actionId != EditorInfo.IME_ACTION_DONE) return false;
+
         mPageSize = handleEditTextInput(v, mPageSize, mTypeKey);
-        if (mMethodManager != null) mMethodManager.toggleSoftInput(0,0);
+
+        InputMethodManager methodManager = (InputMethodManager) mFragmentActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (methodManager != null) methodManager.toggleSoftInput(0,0);
         mSharedPreferences.edit().putInt(getString(R.string.sp_key_pagesize), mPageSize).apply();
 
         // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
@@ -234,6 +235,13 @@ public class ElementListFragment
         set.applyTo(layout);
     }
 
+    private static void orientIcon(Drawable icon, boolean controlsFlipped) {
+        int iconDirection = controlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
+
+        icon.setAutoMirrored(true);
+        icon.setLayoutDirection(iconDirection);
+    }
+
     private static ElementRepository repoFromType(Integer typeKey) {
         ElementDataSourceFactory.DatasourceType type =
                 ElementDataSourceFactory.DatasourceType.values()[typeKey];
@@ -267,13 +275,6 @@ public class ElementListFragment
         }
         v.setText(String.format(Locale.getDefault(), "%d", pageSize));
         return pageSize;
-    }
-
-    private static void orientIcon(Drawable icon, boolean controlsFlipped) {
-        int iconDirection = controlsFlipped ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR;
-
-        icon.setAutoMirrored(true);
-        icon.setLayoutDirection(iconDirection);
     }
 
     private void prepareControllerViews() {
