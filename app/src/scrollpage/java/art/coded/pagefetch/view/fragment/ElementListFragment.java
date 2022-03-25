@@ -98,7 +98,7 @@ public class ElementListFragment
         initAttachListAdapter();
 
         // Instantiate and load ViewModel
-        ElementListViewModel mViewModel = initializeViewModel(this, mTypeKey);
+        mListViewModel = initializeViewModel(this, mTypeKey);
 
         // Populate ListAdapter with observable Element LiveData generating callbacks on list updates
         mListViewModel
