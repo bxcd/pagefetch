@@ -9,6 +9,9 @@ import art.coded.pagefetch.model.source.ElementDataSourceFactory;
 import art.coded.pagefetch.model.fetch.FetchApi;
 import art.coded.pagefetch.model.fetch.FetchClient;
 
+// TODO: Access datasources from single MediatorLiveData instance
+// TODO: Extend MediatorLiveData as singleton to prevent reinstantiation
+
 /**
  * Asynchronous interactions for the ViewModel to interact with Element data
  */
