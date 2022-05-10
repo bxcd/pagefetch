@@ -35,19 +35,19 @@ Singlepage:
 
 ## Illustration
 
+* Increment, decrement, or enter the pagination size by pressing the controller.
 <p>
-Increment, decrement, or enter the pagination size by pressing the controller.
-<img src="https://github.com/bxcd/pagefetch/blob/main/assets/1.png?raw=true" width="50">
-<img src="https://github.com/bxcd/pagefetch/blob/main/assets/2.png?raw=true" width="50">
+<img src="https://github.com/bxcd/pagefetch/blob/main/assets/1.png?raw=true" width="150">
+<img src="https://github.com/bxcd/pagefetch/blob/main/assets/2.png?raw=true" width="150">
+</p>
+
+* Move the controller to the other side of the screen by pressing the second menu icon.
+<p>
+<img src="https://github.com/bxcd/pagefetch/blob/main/assets/3.png?raw=true" width="150">
 </p>
 
 
+* Change the datasource type by pressing the first menu icon.
 <p>
-Move the controller to the other side of the screen by pressing the second menu icon.
-<img src="https://github.com/bxcd/pagefetch/blob/main/assets/3.png?raw=true" width="50">
-</p>
-
-<p>
-Change the datasource type by pressing the first menu icon.
-<img src="https://github.com/bxcd/pagefetch/blob/main/assets/4.png?raw=true" width="50">
+<img src="https://github.com/bxcd/pagefetch/blob/main/assets/4.png?raw=true" width="150">
 </p>
