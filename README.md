@@ -1,6 +1,6 @@
 # pagefetch
 
-**An app for demonstrating local and remote paging of data fetched from a remote datasource**
+An app for demonstrating pagination of data fetched from a remote datasource using switchable page keys and corresponding pagination types.
 
 ## Attribution
 
@@ -15,16 +15,16 @@ This app is built with Android Jetpack and Square Retrofit
 
 **Flavors**
 
+Scrollpage:
+* Fetches and paginates sorted remote list data directly from remote source
+* Pagination size can be asynchronously updated by controller
+* Controller orientation can be updated by menu option
+* Pagination type can be updated by menu option
+
 Singlepage:  
 * Fetches and persists single page to, and loads sorted list from, local database
 * Pagination size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
-
-Scrollpage:
-* Fetches and paginates sorted remote list data without local persistence
-* Pagination size can be asynchronously updated by controller
-* Controller orientation can be updated by menu option
-* Pagination type can be updated by menu option
 
 # Prerequisites
 
