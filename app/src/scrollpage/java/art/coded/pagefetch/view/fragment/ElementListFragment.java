@@ -133,21 +133,13 @@ public class ElementListFragment
         switch(id) {
             case R.id.increment_button:
                 pageSizeChanged = true;
-                if (isPositionalDatatype) {
-                    switch (mPageSize) {
-                        case 1: mPageSize = 5; break;
-                        case 5: mPageSize = 25;
-                    }
-                } else mPageSize++;
+                if (isPositionalDatatype && mPageSize == 5) mPageSize = 25;
+                else mPageSize++;
                 break;
             case R.id.decrement_button:
                 pageSizeChanged = true;
-                if (isPositionalDatatype) {
-                    switch (mPageSize) {
-                        case 5: mPageSize = 1; break;
-                        case 25: mPageSize = 5;
-                    }
-                } else if (mPageSize > 1) mPageSize--;
+                if (isPositionalDatatype && mPageSize == 25) mPageSize = 5;
+                else if (mPageSize > 3) mPageSize--;
                 break;
             default:
         }
