@@ -1,6 +1,6 @@
 # pagefetch
 
-An app for demonstrating pagination of data fetched from a remote datasource with different datasource types.
+An app for demonstrating pagination of data fetched from a remote datasource with different datasource key types.
 
 ## Attribution
 
@@ -23,7 +23,8 @@ Scrollpage:
 * Fetches and paginates sorted remote list data directly from remote source
 * Page size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
-* Datasource type can be updated by menu option
+* Datasource key type can be updated by menu option
+Note: Charity Navigator API is only designed for page-keyed type. Other datasource key types are experimental.
 
 Singlepage:  
 * Fetches and persists single page to, and loads sorted list from, local database
@@ -43,7 +44,7 @@ Singlepage:
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/3.png?raw=true" width="150">
 </p>
 
-##### Change the datasource type by pressing the first menu icon.
+##### Change the datasource key type by pressing the first menu icon.
 <p>
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/4.png?raw=true" width="150">
 </p>
