@@ -21,18 +21,18 @@ This app is built with Android Jetpack and Square Retrofit
 
 Scrollpage:
 * Fetches and paginates sorted remote list data directly from remote source
-* Pagination size can be asynchronously updated by controller
+* Page size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
 * Datasource type can be updated by menu option
 
 Singlepage:  
 * Fetches and persists single page to, and loads sorted list from, local database
-* Pagination size can be asynchronously updated by controller
+* Page size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
 
 ## Illustration
 
-##### Increment, decrement, or enter the pagination size by pressing the controller.
+##### Increment, decrement, or enter the page size by pressing the controller.
 <p>
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/1.png?raw=true" width="150">
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/2.png?raw=true" width="150">
@@ -42,7 +42,6 @@ Singlepage:
 <p>
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/3.png?raw=true" width="150">
 </p>
-
 
 ##### Change the datasource type by pressing the first menu icon.
 <p>
