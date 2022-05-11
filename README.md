@@ -24,7 +24,6 @@ Scrollpage:
 * Page size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
 * Datasource key type can be updated by menu option
-* Note: Charity Navigator API is only designed for page-keyed type. Other datasource key types are experimental.
 
 Singlepage:  
 * Fetches and persists single page to, and loads sorted list from, local database
@@ -48,3 +47,4 @@ Singlepage:
 <p>
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/4.png?raw=true" width="150">
 </p>
+* Note: Charity Navigator API is only designed for page-keyed type. Other datasource key types are experimental.
