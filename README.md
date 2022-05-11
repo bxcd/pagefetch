@@ -47,4 +47,4 @@ Singlepage:
 <p>
 <img src="https://github.com/bxcd/pagefetch/blob/main/assets/4.png?raw=true" width="150">
 </p>
-<p style="font-size: 10px;">Note: Charity Navigator API is only designed for page-keyed type. Other datasource key types are experimental.</p>
+##### Note: Charity Navigator API is only designed for page-keyed type. Other datasource key types are experimental.
