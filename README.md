@@ -2,10 +2,6 @@
 
 An app for demonstrating pagination of data fetched from a remote datasource with different datasource key types.
 
-## Attribution
-
-This app is built with Android Jetpack and Square Retrofit
-
 ## Prerequisites
 
 1. Clone the repository by running [git clone https://github.com/bxcd/pagefetch.git]
@@ -25,7 +21,7 @@ Scrollpage:
 * Controller orientation can be updated by menu option
 * Datasource key type can be updated by menu option
 
-Singlepage:  
+Singlepage:
 * Fetches and persists single page to, and loads sorted list from, local database
 * Page size can be asynchronously updated by controller
 * Controller orientation can be updated by menu option
@@ -49,3 +45,10 @@ Singlepage:
 </p>
 
 ##### Note: Charity Navigator API is only designed for page-keyed type. Other datasource key types are experimental.
+
+## Attribution
+
+Made with Android Jetpack and Square Retrofit.
+
+#### Author: John Basil
+#### Date:   04 Feb 2022
